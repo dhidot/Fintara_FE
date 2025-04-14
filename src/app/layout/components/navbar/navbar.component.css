@@ -1,0 +1,6 @@
+.btn-light.text-danger:hover {
+  background-color: rgba(255, 0, 0, 0.1);
+  /* Efek hover dengan latar belakang merah muda */
+  color: red;
+  border-color: red;
+}

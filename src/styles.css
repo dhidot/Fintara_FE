@@ -1,1 +1,54 @@
 /* You can add global styles to this file, and also import other style files */
+/* Mengatur overlay-container untuk memastikan toast muncul di atas halaman */
+.overlay-container {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  /* Membiarkan interaksi dengan konten lain di bawahnya */
+  z-index: 9999;
+  /* Menjamin overlay berada di atas elemen lain */
+}
+
+/* Menempatkan toast di kanan atas */
+#toast-container {
+  position: fixed !important;
+  top: 12px;
+  right: 12px;
+  z-index: 10000;
+  /* Pastikan toast berada di atas overlay */
+}
+
+/* Styling untuk body dan layout */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f6f9;
+  /* Background halaman */
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  margin-top: 50px;
+  /* Mengatur jarak atas konten */
+}
+
+h2 {
+  font-size: 24px;
+  color: #333;
+}
+
+.btn {
+  font-size: 16px;
+}
+
+/* Agar toast lebih responsif */
+@media (max-width: 576px) {
+  .toast {
+    width: 90%;
+    left: 5%;
+    right: 5%;
+  }
+}

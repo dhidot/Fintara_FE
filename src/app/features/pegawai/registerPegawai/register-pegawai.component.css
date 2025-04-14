@@ -1,0 +1,33 @@
+.container {
+  max-width: 600px;
+  margin-left: 0;
+  margin-right: auto;
+  padding-left: 2rem;
+}
+
+h2 {
+  margin-bottom: 30px;
+}
+
+.form-control,
+.form-select {
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
+button:disabled {
+  background-color: #ccc;
+}
+
+button {
+  margin-top: 20px;
+  width: 100%;
+}
+
+select {
+  appearance: auto;
+  -webkit-appearance: menulist;
+  /* Safari */
+  -moz-appearance: menulist;
+  /* Firefox */
+}

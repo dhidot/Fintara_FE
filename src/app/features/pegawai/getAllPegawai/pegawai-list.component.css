@@ -1,0 +1,28 @@
+.datatable-custom {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.datatable-custom .datatable-header {
+  font-weight: bold;
+  background-color: #f8f9fa;
+}
+
+.datatable-custom .datatable-body-row {
+  transition: background-color 0.3s;
+}
+
+.datatable-custom .datatable-body-row:hover {
+  background-color: #f1f1f1;
+}
+
+:host ::ng-deep .datatable-body {
+  font-size: 14px;
+}
+
+:host ::ng-deep .btn-sm {
+  padding: 4px 8px;
+  font-size: 12px;
+}

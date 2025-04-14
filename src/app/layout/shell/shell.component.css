@@ -1,0 +1,31 @@
+/* Sidebar fix di kiri */
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-y: auto;
+  background-color: #343a40;
+  color: white;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 1000;
+}
+
+/* Konten utama digeser sejauh sidebar */
+.main-content {
+  margin-left: 250px;
+}
+
+/* Opsional: responsive collapse di layar kecil */
+@media (max-width: 768px) {
+  .sidebar {
+    position: relative;
+    width: 100%;
+    height: auto;
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+}

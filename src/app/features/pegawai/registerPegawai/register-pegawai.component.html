@@ -1,0 +1,59 @@
+<div class="container mt-5 mb-5">
+  <h2 class="mb-4 fw-bold">Registrasi Pegawai</h2>
+
+  <form (ngSubmit)="onSubmit()">
+    <!-- Name -->
+    <div class="form-group">
+      <label for="name">Nama</label>
+      <input type="text" class="form-control" id="name" [(ngModel)]="pegawai.name" name="name" required />
+    </div>
+
+    <!-- Email -->
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" class="form-control" id="email" [(ngModel)]="pegawai.email" name="email" required />
+    </div>
+
+    <!-- NIP -->
+    <div class="form-group">
+      <label for="nip">NIP</label>
+      <input type="text" class="form-control" id="nip" [(ngModel)]="pegawai.nip" name="nip" required />
+    </div>
+
+    <!-- Role Dropdown -->
+    <div class="form-group">
+      <label for="role">Role</label>
+      <select [(ngModel)]="pegawai.role" class="form-control" id="roleName" name="roleName" required>
+        <option value="">Pilih Role</option>
+        <option *ngFor="let role of roleList" [value]="role.name">
+          {{ roleNameMap[role.name] || role.name }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Branch Dropdown -->
+    <div class="form-group">
+      <label for="branchName">Cabang</label>
+      <select class="form-control" id="branchName" [(ngModel)]="pegawai.branchName" name="branchName" required>
+        <option value="">Pilih Cabang</option>
+        <option *ngFor="let branch of branchList" [value]="branch.name">{{ branch.name }}</option>
+      </select>
+    </div>
+
+    <!-- Status Dropdown -->
+    <div class="form-group">
+      <label for="statusPegawai">Status Pegawai</label>
+      <select class="form-control" id="statusPegawai" [(ngModel)]="pegawai.statusPegawai" name="statusPegawai" required>
+        <option *ngFor="let status of statusList" [value]="status.value">{{ status.label }}</option>
+      </select>
+    </div>
+
+    <button class="btn btn-primary" [disabled]="isLoading" (click)="onSubmit()">
+      <span *ngIf="!isLoading">Simpan</span>
+      <span *ngIf="isLoading">
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        Menyimpan...
+      </span>
+    </button>
+  </form>
+</div>

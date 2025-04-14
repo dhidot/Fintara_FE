@@ -1,0 +1,13 @@
+<nav class="navbar navbar-expand-lg" style="background-color: #0055A4;">
+  <div class="container-fluid">
+    <span class="navbar-brand text-white fw-semibold">BCA Finance Admin</span>
+    <div class="ms-auto">
+      <button class="btn btn-outline-light d-flex align-items-center gap-2" (click)="onLogout()"
+        [disabled]="isLoggingOut">
+        <span *ngIf="isLoggingOut" class="spinner-border spinner-border-sm" role="status"></span>
+        <i *ngIf="!isLoggingOut" class="bi bi-box-arrow-right"></i>
+        <span>{{ isLoggingOut ? 'Logging out...' : 'Logout' }}</span>
+      </button>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,43 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
+
+@Injectable({ providedIn: 'root' })
+export class AuthService {
+  private baseUrl = `${environment.apiBaseUrl}/auth`;
+  private pegawaiBaseUrl = `${environment.pegawaiBaseURL}`; // URL untuk pegawai
+
+  constructor(private http: HttpClient) {}
+
+  login(data: { nip: string; password: string }): Observable<any> {
+    return this.http.post(`${this.baseUrl}/login-pegawai`, data);
+  }
+
+  logout(): Observable<any> {
+    const token = localStorage.getItem('access_token');
+    return this.http.post(`${this.baseUrl}/logout`, null, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  }
+
+  sendResetPasswordEmail(email: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/forgot-password`, { email });
+  }
+
+  resetPassword(token: string, newPassword: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/reset-password`, { token, newPassword });
+  }
+
+  // Mengambil data pegawai dari backend
+  getAllPegawai(): Observable<any[]> {
+    const token = localStorage.getItem('access_token');
+    return this.http.get<any[]>(`${this.pegawaiBaseUrl}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  }
+}

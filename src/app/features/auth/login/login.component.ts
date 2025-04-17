@@ -11,6 +11,7 @@ import { ToastrService } from 'ngx-toastr';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
   templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
   form: FormGroup;
@@ -41,6 +42,14 @@ export class LoginComponent {
       next: (response) => {
         localStorage.setItem('access_token', response.data.jwt.token);
         localStorage.setItem('features', JSON.stringify(response.data.jwt.features));
+        localStorage.setItem(
+          'user',
+          JSON.stringify({
+            name: response.data.jwt.name,
+            email: response.data.jwt.username,
+            role: response.data.jwt.role
+          })
+        );
 
         const isFirstLogin = response.data.firstLogin;
         if (isFirstLogin) {
@@ -71,5 +80,4 @@ export class LoginComponent {
       }
     });
   }
-
 }

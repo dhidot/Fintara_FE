@@ -1,32 +1,31 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms'; // Pastikan ini diimpor
-import { CommonModule } from '@angular/common'; // Tambahkan CommonModule di sini
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { PegawaiService } from '../../../core/services/pegawai.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PegawaiDetailsRequestDTO } from '../../../core/models/pegawai-detail-request.dto';
-import { BranchService } from '../../../core/services/branch.service';  // Import service untuk branch
+import { BranchService } from '../../../core/services/branch.service';
 
 @Component({
   selector: 'app-edit-pegawai',
   standalone: true,
-  imports: [CommonModule, FormsModule],  // Tambahkan CommonModule di sini
+  imports: [CommonModule, FormsModule],
   templateUrl: './edit-pegawai.component.html',
   styleUrls: ['./edit-pegawai.component.css']
 })
 export class EditPegawaiComponent implements OnInit {
   pegawai: any = {};
-  branches: any[] = []; // Daftar branches
+  branches: any[] = [];
   isLoading = false;
   idPegawai: string = '';
-  selectedBranchId: string = '';
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private pegawaiService: PegawaiService,
     private toastr: ToastrService,
-    private branchService: BranchService // Inject service untuk branch
+    private branchService: BranchService
   ) {}
 
   roleOptions = [
@@ -40,13 +39,12 @@ export class EditPegawaiComponent implements OnInit {
   ngOnInit(): void {
     this.idPegawai = this.route.snapshot.paramMap.get('id') || '';
     if (this.idPegawai) {
+      this.loadBranches(); // Load branches dulu supaya bisa digunakan saat load pegawai
       this.loadPegawaiDetails(this.idPegawai);
-      this.loadBranches();  // Ambil daftar branches
     }
   }
 
   loadPegawaiDetails(idPegawai: string): void {
-    this.isLoading = true;
     this.pegawaiService.getPegawaiById(idPegawai).subscribe({
       next: (response) => {
         this.pegawai = {
@@ -57,47 +55,37 @@ export class EditPegawaiComponent implements OnInit {
           nip: response.pegawaiDetails?.nip || '',
           statusPegawai: response.pegawaiDetails?.statusPegawai || '',
           branchName: response.pegawaiDetails?.branchName || '',
-          branchId: '' // default, akan diisi nanti lewat matching
+          branchId: ''
         };
 
-        // Optional: kalau kamu juga dapat daftar branch dan ingin preselect berdasarkan branchName
+        // Set branchId berdasarkan branchName
         const found = this.branches.find(branch => branch.name === this.pegawai.branchName);
         if (found) {
           this.pegawai.branchId = found.id;
         }
       },
-      error: (error) => {
+      error: () => {
         this.toastr.error('Gagal memuat data pegawai.', 'Error', {
           positionClass: 'toast-bottom-right',
           progressBar: true
         });
-      },
-      complete: () => {
-        this.isLoading = false;
       }
     });
   }
 
   loadBranches(): void {
-    this.isLoading = true;
     this.branchService.getAllBranches().subscribe({
       next: (response) => {
-        console.log('Branches data:', response);  // Menampilkan data di console untuk debugging
         this.branches = response;
       },
-      error: (error) => {
-        console.error('Error fetching branches:', error);  // Log error untuk debugging
+      error: () => {
         this.toastr.error('Gagal memuat daftar branch.', 'Error', {
           positionClass: 'toast-bottom-right',
           progressBar: true
         });
-      },
-      complete: () => {
-        this.isLoading = false;
       }
     });
-}
-
+  }
 
   onSubmit(): void {
     this.isLoading = true;
@@ -105,26 +93,30 @@ export class EditPegawaiComponent implements OnInit {
       nip: this.pegawai.nip,
       branchId: this.pegawai.branchId,
       statusPegawai: this.pegawai.statusPegawai,
-      role: this.pegawai.role
+      role: { name: this.pegawai.role }
     };
 
     this.pegawaiService.updatePegawaiDetails(this.idPegawai, request).subscribe({
-      next: () => {
-        this.toastr.success('Data pegawai berhasil diperbarui.', 'Success', {
+      next: (response) => {
+        this.toastr.success(response.message, 'Success', {
           positionClass: 'toast-bottom-right',
           progressBar: true
         });
         this.router.navigate(['/pegawai']);
       },
       error: (error) => {
-        this.toastr.error('Gagal memperbarui data pegawai.', 'Error', {
+        this.toastr.error(error.message || 'Gagal memperbarui data pegawai.', 'Error', {
           positionClass: 'toast-bottom-right',
           progressBar: true
         });
+        this.isLoading = false;
       },
       complete: () => {
         this.isLoading = false;
       }
     });
+  }
+  onCancel(): void {
+    this.router.navigate(['/pegawai']);
   }
 }

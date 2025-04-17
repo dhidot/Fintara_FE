@@ -1,27 +1,38 @@
 <div class="container mt-5" style="max-width: 400px;">
-  <h2 class="text-center mb-4">Login Pegawai</h2>
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div class="mb-3">
-      <label for="nip" class="form-label">NIP</label>
-      <input formControlName="nip" type="text" class="form-control" id="nip" [disabled]="isLoading" />
-    </div>
-    <div class="mb-3">
-      <label for="password" class="form-label">Password</label>
-      <input formControlName="password" type="password" class="form-control" id="password" [disabled]="isLoading" />
-    </div>
+  <div class="card shadow-lg">
+    <div class="card-body">
+      <h2 class="text-center mb-4">Login Pegawai</h2>
 
-    <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show">
-      {{ errorMessage }}
+      <!-- Form Login -->
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="nip" class="form-label">NIP</label>
+          <input formControlName="nip" type="text" class="form-control" id="nip" [disabled]="isLoading" />
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input formControlName="password" type="password" class="form-control" id="password" [disabled]="isLoading" />
+        </div>
+
+        <!-- Error message -->
+        <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show">
+          {{ errorMessage }}
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary w-100" [disabled]="form.invalid || isLoading">
+          <span *ngIf="!isLoading">Login</span>
+          <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status"></span>
+          <span *ngIf="isLoading" class="ms-2">Logging in...</span>
+        </button>
+
+        <!-- Forgot Password Link -->
+        <div class="text-center mt-3">
+          <a routerLink="/forgot-password" href="#/forgot-password" class="text-primary text-decoration-underline">
+            Lupa password?
+          </a>
+        </div>
+      </form>
     </div>
-    <button type="submit" class="btn btn-primary w-100" [disabled]="form.invalid || isLoading">
-      <span *ngIf="!isLoading">Login</span>
-      <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status"></span>
-      <span *ngIf="isLoading" class="ms-2">Logging in...</span>
-    </button>
-    <div class="text-center mt-3">
-      <a routerLink="/forgot-password" href="#/forgot-password" class="text-primary text-decoration-underline">
-        Lupa password?
-      </a>
-    </div>
-  </form>
+  </div>
 </div>

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # SakuBCAFE
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.6.
@@ -57,3 +58,7 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+=======
+# SakuBCA-FrontEnd
+Front End for Saku BCA Loan App
+>>>>>>> d87f35302eaae427a474ea1cc8946b5f9a41bb14

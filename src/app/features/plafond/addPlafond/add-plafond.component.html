@@ -1,0 +1,37 @@
+<div class="container mt-4">
+  <h4 class="mb-3">Tambah Plafond</h4>
+
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group mb-3">
+      <label for="name">Nama Plafond</label>
+      <input type="text" class="form-control" id="name" [(ngModel)]="plafond.name" name="name" required />
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="maxAmount">Jumlah Maksimum</label>
+      <input type="number" class="form-control" id="maxAmount" [(ngModel)]="plafond.maxAmount" name="maxAmount"
+        required />
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="interestRate">Bunga (%)</label>
+      <input type="number" class="form-control" id="interestRate" [(ngModel)]="plafond.interestRate" name="interestRate"
+        required step="0.01" />
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="minTenor">Minimal Tenor (bulan)</label>
+      <input type="number" class="form-control" id="minTenor" [(ngModel)]="plafond.minTenor" name="minTenor" required />
+    </div>
+
+    <div class="form-group mb-4">
+      <label for="maxTenor">Maksimal Tenor (bulan)</label>
+      <input type="number" class="form-control" id="maxTenor" [(ngModel)]="plafond.maxTenor" name="maxTenor" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+      <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
+      Simpan
+    </button>
+  </form>
+</div>

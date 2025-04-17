@@ -1,0 +1,48 @@
+<div class="container mt-4 d-flex justify-content-center">
+  <ng-container *ngIf="!isLoading; else loadingTpl">
+    <div class="card shadow-lg rounded-4 p-4" style="max-width: 600px; width: 100%;">
+      <!-- Avatar -->
+      <div class="d-flex justify-content-center mb-4">
+        <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center"
+          style="width: 100px; height: 100px;">
+          <i class="bi bi-person-circle text-white" style="font-size: 3rem;"></i>
+        </div>
+      </div>
+
+      <!-- Nama dan Email -->
+      <div class="text-center mb-3">
+        <h5 class="mb-1">{{ profile?.name }}</h5>
+        <p class="text-muted mb-0">{{ profile?.email }}</p>
+      </div>
+
+      <!-- Informasi Lain -->
+      <hr />
+      <div class="mb-2">
+        <strong>Role:</strong>
+        <div>{{ stringUtils.formatRoleName(profile?.role) }}</div>
+      </div>
+      <div class="mb-2">
+        <strong>Status Pegawai:</strong>
+        <div>{{ profile?.pegawaiDetails?.statusPegawai }}</div>
+      </div>
+      <div class="mb-2">
+        <strong>NIP:</strong>
+        <div>{{ profile?.pegawaiDetails?.nip }}</div>
+      </div>
+      <div class="mb-3">
+        <strong>Cabang:</strong>
+        <div>{{ profile?.pegawaiDetails?.branchName }}</div>
+      </div>
+
+      <!-- Tombol Edit -->
+      <div class="text-end">
+        <button class="btn btn-outline-primary" (click)="onEdit()">Edit Profil</button>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- Loading Template -->
+  <ng-template #loadingTpl>
+    <app-loading message="Memuat profil pegawai..."></app-loading>
+  </ng-template>
+</div>

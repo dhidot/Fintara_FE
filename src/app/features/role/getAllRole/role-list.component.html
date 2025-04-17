@@ -1,0 +1,42 @@
+<div class="container mt-3">
+  <h4 class="mb-3">Daftar Role</h4>
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <button class="btn btn-outline-primary" [routerLink]="['/role/add']">
+      + Add Role
+    </button>
+
+    <div class="d-flex align-items-center">
+      <div class="input-group" style="max-width: 300px;">
+        <input type="text" class="form-control" placeholder="Cari role..." [(ngModel)]="searchTerm"
+          (input)="filterRoles()" />
+        <span class="input-group-text">
+          <i class="bi bi-search"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Indicator -->
+  <app-loading *ngIf="isLoading" message="Memuat data role..."></app-loading>
+
+  <!-- Table -->
+  <ngx-datatable *ngIf="!isLoading" class="bootstrap" [rows]="filteredRoles" [columnMode]="'force'" [headerHeight]="50"
+    [footerHeight]="50" [rowHeight]="'auto'" [limit]="10">
+    <ngx-datatable-column name="Nama Role" prop="name">
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        {{ stringUtils.formatRoleName(row.name) }}
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Jumlah Fitur" [width]="150" prop="featureCount">
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        {{ row.featureCount }}
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Aksi" [minWidth]="120">
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <app-table-action-buttons [showEdit]="true" (editClicked)="onEdit(row)"></app-table-action-buttons>
+      </ng-template>
+    </ngx-datatable-column>
+  </ngx-datatable>
+</div>

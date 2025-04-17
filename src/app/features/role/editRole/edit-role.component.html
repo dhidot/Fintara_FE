@@ -1,0 +1,29 @@
+<div class="container mt-3">
+  <h4 class="mb-3">Edit Role</h4>
+
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group mb-3">
+      <label for="roleName">Nama Role</label>
+      <input type="text" class="form-control" id="roleName" [(ngModel)]="roleName" name="roleName" required />
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="features">Pilih Fitur</label>
+      <div class="row">
+        <!-- Loop untuk menampilkan fitur dalam 3 kolom -->
+        <div *ngFor="let feature of allFeatures" class="col-md-4">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" [id]="feature.id"
+              [checked]="selectedFeatureIds.includes(feature.id)" (change)="onFeatureChange($event, feature.id)" />
+            <label class="form-check-label" [for]="feature.id">
+              {{ stringUtils.formatFeatureName(feature.name) }}
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <button type="submit" class="btn btn-primary">Simpan</button>
+  </form>
+</div>

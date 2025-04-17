@@ -8,22 +8,45 @@
       </a>
     </li>
 
-    <li *ngIf="hasFeature('FEATURE_BRANCHES_ACCESS')" class="nav-item mb-2">
-      <a class="nav-link text-white" routerLink="/branches" routerLinkActive="active">
-        <i class="bi bi-diagram-3-fill me-2"></i> Cabang
-      </a>
-    </li>
-
-    <li *ngIf="hasFeature('FEATURE_EMPLOYEE_ACCESS')" class="nav-item mb-2">
+    <li *ngIf="hasFeature('FEATURE_GET_ALL_EMPLOYEE_ACCESS')" class="nav-item mb-2">
       <a class="nav-link text-white" routerLink="/pegawai" routerLinkActive="active">
         <i class="bi bi-people-fill me-2"></i> Pegawai
       </a>
     </li>
 
-    <li *ngIf="hasFeature('FEATURE_CUSTOMER_ACCESS')" class="nav-item mb-2">
-      <a class="nav-link text-white" routerLink="/customers" routerLinkActive="active">
-        <i class="bi bi-person-lines-fill me-2"></i> Nasabah
+    <li *ngIf="hasFeature('FEATURE_GET_ALL_CUSTOMER_ACCESS')" class="nav-item mb-2">
+      <a class="nav-link text-white" routerLink="/customer" routerLinkActive="active">
+        <i class="bi bi-people me-2"></i> Customer
       </a>
     </li>
+
+    <li *ngIf="hasFeature('FEATURE_GET_ALL_BRANCHES_ACCESS')" class="nav-item mb-2">
+      <a class="nav-link text-white" routerLink="/branches" routerLinkActive="active">
+        <i class="bi bi-diagram-3-fill me-2"></i> Cabang
+      </a>
+    </li>
+
+    <li *ngIf="hasFeature('FEATURE_ROLE_ACCESS')" class="nav-item mb-2">
+      <a class="nav-link text-white" routerLink="/roles" routerLinkActive="active">
+        <i class="bi bi-shield-lock-fill me-2"></i> Role
+      </a>
+    </li>
+
+    <li *ngIf="hasFeature('FEATURE_PLAFOND_ACCESS')" class="nav-item mb-2">
+      <a class="nav-link text-white" routerLink="/plafonds" routerLinkActive="active">
+        <i class="bi bi-credit-card-fill me-2"></i> Plafond
+      </a>
+    </li>
+
+    <li *ngIf="hasFeature('FEATURE_APPROVAL_MARKETING')" class="nav-item mb-2">
+      <a class="nav-link text-white" routerLink="/loan-request/marketing/all" routerLinkActive="active">
+        <i class="bi bi-people me-2"></i> Loan Req Marketing
+      </a>
+    </li>
+
+    <li *ngIf="hasFeature('FEATURE_APPROVAL_BM')" class="nav-item mb-2">
+      <a class="nav-link text-white" routerLink="/loan-request/branch-manager/all" routerLinkActive="active">
+        <i class="bi bi-people me-2"></i> Loan Req Branch Manager
+      </a>
   </ul>
 </nav>

@@ -1,18 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './navbar.component.html',
+  styleUrls: ['./navbar.component.css'],
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
   isLoggingOut = false;
+  user: any = null;
 
   constructor(private authService: AuthService, private router: Router) {}
+
+  ngOnInit(): void {
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      this.user = JSON.parse(userData);
+    }
+  }
 
   onLogout() {
     this.isLoggingOut = true;
@@ -25,7 +34,12 @@ export class NavbarComponent {
   private finishLogout() {
     localStorage.removeItem('access_token');
     localStorage.removeItem('features');
+    localStorage.removeItem('user');
     this.router.navigate(['/login']);
     this.isLoggingOut = false;
+  }
+
+  goToProfile(): void {
+      this.router.navigate(['/profile']);
   }
 }

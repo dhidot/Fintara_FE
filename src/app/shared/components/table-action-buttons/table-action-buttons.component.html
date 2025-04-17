@@ -1,0 +1,11 @@
+<div class="btn-group btn-group-sm">
+  <button *ngIf="showDetail" class="btn btn-info" (click)="detailClicked.emit()">
+    <i class="bi bi-eye"></i>
+  </button>
+  <button *ngIf="showEdit" class="btn btn-primary" (click)="editClicked.emit()">
+    <i class="bi bi-pencil"></i>
+  </button>
+  <button *ngIf="showDelete" class="btn btn-danger" (click)="deleteClicked.emit()">
+    <i class="bi bi-trash"></i>
+  </button>
+</div>

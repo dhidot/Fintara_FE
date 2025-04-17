@@ -1,6 +1,37 @@
-.btn-light.text-danger:hover {
-  background-color: rgba(255, 0, 0, 0.1);
-  /* Efek hover dengan latar belakang merah muda */
-  color: red;
-  border-color: red;
+/* Styling untuk div yang berisi nama dan ikon */
+.navbar .ms-auto .d-flex {
+  display: flex;
+  align-items: center;
+}
+
+/* Styling untuk tombol logout */
+.navbar .ms-auto button {
+  border: 2px solid #fff;
+  padding: 8px 16px;
+  border-radius: 50px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Efek hover untuk logout menjadi merah */
+.navbar .ms-auto button:hover {
+  background-color: #ff4d4d;
+  /* Merah */
+  color: white;
+  /* Warna teks putih */
+}
+
+/* Styling untuk teks nama */
+.navbar .ms-auto .text-white {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* Ukuran icon di depan nama */
+.navbar .ms-auto .bi-person-circle {
+  font-size: 1.5rem;
+}
+
+/* Padding dan margin untuk keselarasan */
+.navbar .ms-auto .me-3 {
+  margin-right: 20px;
 }

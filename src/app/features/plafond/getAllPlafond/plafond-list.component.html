@@ -1,0 +1,31 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold">Daftar Plafond</h4>
+    <button class="btn btn-primary" (click)="goToAddPlafond()">
+      <i class="bi bi-plus-circle me-1"></i> Tambah Plafond
+    </button>
+  </div>
+
+  <!-- Loading indicator -->
+  <app-loading *ngIf="isLoading" message="Memuat data plafond..."></app-loading>
+
+  <!-- Data Plafond Cards -->
+  <div class="row">
+    <div class="col-md-6 col-lg-4 mb-4" *ngFor="let plafond of plafonds">
+      <div class="card shadow-lg border-0 rounded-4 h-100" [ngClass]="getCardClass(plafond.name)">
+        <div class="card-body p-4">
+          <h5 class="card-title fw-semibold">
+            <i [ngClass]="getIconClass(plafond.name)" class="me-2"></i>
+            {{ plafond.name }}
+          </h5>
+          <p class="mb-1"><strong>Maksimum:</strong> {{ plafond.maxAmount | currency:'IDR':'symbol' }}</p>
+          <p class="mb-1"><strong>Bunga:</strong> {{ plafond.interestRate * 100 | number:'1.1-1' }}%</p>
+          <p class="mb-1"><strong>Tenor:</strong> {{ plafond.minTenor }} - {{ plafond.maxTenor }} bulan</p>
+          <button class="btn btn-outline-light mt-3 w-100" (click)="editPlafond(plafond)">
+            <i class="bi bi-pencil-fill me-1"></i> Edit
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,9 +1,17 @@
-<div class="d-flex">
-  <app-sidebar class="sidebar"></app-sidebar>
-  <div class="flex-grow-1">
-    <app-navbar></app-navbar>
-    <div class="p-4">
-      <router-outlet></router-outlet>
+<app-loading *ngIf="isLoading" message="Memuat data dashboard..."></app-loading>
+
+<div class="container mt-4" *ngIf="!isLoading">
+  <div class="row g-4">
+    <div class="col-md-4" *ngFor="let card of cards">
+      <div class="card text-white {{ card.bgColor }} h-100 shadow">
+        <div class="card-body d-flex align-items-center">
+          <i class="bi {{ card.icon }} fs-1 me-3"></i>
+          <div>
+            <h5 class="card-title">{{ card.title }}</h5>
+            <p class="card-text fs-4 fw-bold">{{ card.value }}</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

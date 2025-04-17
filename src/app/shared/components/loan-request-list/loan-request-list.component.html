@@ -1,0 +1,41 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <div></div> <!-- Kosong atau bisa untuk tombol tambah jika diperlukan -->
+
+  <div class="d-flex align-items-center">
+    <div class="input-group" style="max-width: 300px;">
+      <input type="text" class="form-control" placeholder="Cari pengajuan..." [(ngModel)]="searchTerm"
+        (input)="filterRequests()" />
+      <span class="input-group-text">
+        <i class="bi bi-search"></i>
+      </span>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="isLoading" class="text-center my-4">
+  <span class="spinner-border text-primary" role="status"></span>
+</div>
+
+<ngx-datatable *ngIf="!isLoading" class="bootstrap" [rows]="filteredLoanRequests" [columns]="[]" [columnMode]="'force'"
+  [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'">
+  <ngx-datatable-column name="Customer" prop="customerName"></ngx-datatable-column>
+  <ngx-datatable-column name="Plafond" prop="plafondName"></ngx-datatable-column>
+  <ngx-datatable-column name="Jumlah" prop="amount">
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      Rp{{ row.amount | number: '1.0-0' }}
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column name="Tenor" prop="tenor">
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      {{ row.tenor }} bulan
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column name="Status" prop="status"></ngx-datatable-column>
+  <ngx-datatable-column name="Aksi">
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      <button class="btn btn-sm btn-primary" (click)="onViewDetail(row.id)">
+        Lihat Detail
+      </button>
+    </ng-template>
+  </ngx-datatable-column>
+</ngx-datatable>

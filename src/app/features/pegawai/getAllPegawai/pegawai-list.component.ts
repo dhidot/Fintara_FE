@@ -6,18 +6,20 @@ import { RouterLink } from '@angular/router'; // <- tambahkan ini jika nanti mau
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { Router } from '@angular/router'; // <- tambahkan ini jika nanti mau redirect
 import { FormsModule } from '@angular/forms'; // tambahkan FormsModule
+import { LoadingComponent } from 'src/app/shared/components/loading/loading.component';
+import { TableActionButtonsComponent } from 'src/app/shared/components/table-action-buttons/table-action-buttons.component'; // <- tambahkan ini jika nanti mau redirect
 
 @Component({
   selector: 'app-list-pegawai',
   standalone: true,
-  imports: [CommonModule, NgxDatatableModule, FormsModule, RouterLink],
+  imports: [CommonModule, NgxDatatableModule, FormsModule, RouterLink, LoadingComponent, TableActionButtonsComponent],
   templateUrl: './pegawai-list.component.html',
   styleUrls: ['./pegawai-list.component.css'],
 })
 export class ListPegawaiComponent implements OnInit {
   pegawaiList: any[] = [];
   filteredPegawaiList: any[] = [];
-  isLoading = false;
+  isLoading = true;
   searchTerm = '';
 
   constructor(private pegawaiService: PegawaiService, private toastr: ToastrService, private router: Router) {}

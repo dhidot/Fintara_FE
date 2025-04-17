@@ -1,0 +1,33 @@
+<div class="container mt-3">
+  <h4 class="mb-3">Edit Branch</h4>
+
+  <form (ngSubmit)="onSubmit()" #editBranchForm="ngForm">
+    <div class="form-group">
+      <label for="name">Nama Branch</label>
+      <input type="text" id="name" class="form-control" [(ngModel)]="branch.name" name="name" required />
+    </div>
+
+    <div class="form-group">
+      <label for="address">Alamat Branch</label>
+      <input type="text" id="address" class="form-control" [(ngModel)]="branch.address" name="address" required />
+    </div>
+
+    <div class="form-group">
+      <label for="latitude">Latitude</label>
+      <input type="number" id="latitude" class="form-control" [(ngModel)]="branch.latitude" name="latitude"
+        step="any" />
+    </div>
+
+    <div class="form-group">
+      <label for="longitude">Longitude</label>
+      <input type="number" id="longitude" class="form-control" [(ngModel)]="branch.longitude" name="longitude"
+        step="any" />
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="editBranchForm.invalid || isLoading">
+      <!-- Tampilkan spinner jika loading -->
+      <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+      Simpan
+    </button>
+  </form>
+</div>

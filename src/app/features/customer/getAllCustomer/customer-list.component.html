@@ -1,0 +1,21 @@
+<div class="container mt-3">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Daftar Customer</h3>
+    <input type="text" class="form-control w-25" [(ngModel)]="searchTerm" (input)="filterCustomer()"
+      placeholder="Cari customer..." />
+  </div>
+
+  <ngx-datatable class="bootstrap" [rows]="filteredCustomerList" [columns]="[]" [columnMode]="'force'"
+    [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10">
+    <ngx-datatable-column name="Nama" prop="name"></ngx-datatable-column>
+    <ngx-datatable-column name="Email" prop="email"></ngx-datatable-column>
+    <ngx-datatable-column name="Role" prop="role"></ngx-datatable-column>
+    <ngx-datatable-column name="NIK" prop="nik"></ngx-datatable-column>
+    <ngx-datatable-column name="Status Pekerjaan" prop="statusPekerjaan"></ngx-datatable-column>
+    <ngx-datatable-column name="Aksi" [minWidth]="120">
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <app-table-action-buttons [showEdit]="true" (editClicked)="onEdit(row)"></app-table-action-buttons>
+      </ng-template>
+    </ngx-datatable-column>
+  </ngx-datatable>
+</div>

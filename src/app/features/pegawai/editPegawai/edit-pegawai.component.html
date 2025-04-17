@@ -1,52 +1,46 @@
 <div class="container mt-4">
   <h4>Edit Pegawai</h4>
-  <div *ngIf="!isLoading; else loading">
-    <form (ngSubmit)="onSubmit()">
-      <div class="mb-3">
-        <label for="nip" class="form-label">NIP</label>
-        <input type="text" id="nip" class="form-control" [(ngModel)]="pegawai.nip" name="nip" required />
-      </div>
 
-      <div class="mb-3">
-        <label for="role" class="form-label">Role</label>
-        <select class="form-select" id="role" [(ngModel)]="pegawai.role" name="role" required>
-          <option *ngFor="let role of roleOptions" [ngValue]="role.value">{{ role.label }}</option>
-        </select>
-      </div>
-
-      <div class="mb-3">
-        <label for="statusPegawai" class="form-label">Status Pegawai</label>
-        <select class="form-select" id="statusPegawai" [(ngModel)]="pegawai.statusPegawai" name="statusPegawai"
-          required>
-          <option [ngValue]="'ACTIVE'">Active</option>
-          <option [ngValue]="'CDT'">CDT</option>
-          <option [ngValue]="'CUTI'">Cuti</option>
-          <option [ngValue]="'RESIGN'">Resign</option>
-        </select>
-      </div>
-
-      <div class="mb-3">
-        <label for="branchId" class="form-label">Cabang</label>
-        <select class="form-select" id="branchId" [(ngModel)]="pegawai.branchId" name="branchId" required>
-          <option *ngFor="let branch of branches" [ngValue]="branch.id">{{ branch.name }}</option>
-        </select>
-      </div>
-
-      <button type="submit" class="btn btn-primary" [disabled]="isLoading">
-        <span *ngIf="!isLoading">Simpan</span>
-        <span *ngIf="isLoading">
-          <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
-          Menyimpan...
-        </span>
-      </button>
-    </form>
-  </div>
-
-  <ng-template #loading>
-    <div class="text-center mt-5">
-      <div class="spinner-border" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>
+  <form (ngSubmit)="onSubmit()" [class.opacity-50]="isLoading" [class.pointer-events-none]="isLoading">
+    <div class="mb-3">
+      <label for="nip" class="form-label">NIP</label>
+      <input type="text" id="nip" class="form-control" [(ngModel)]="pegawai.nip" name="nip" required />
     </div>
-  </ng-template>
+
+    <div class="mb-3">
+      <label for="role" class="form-label">Role</label>
+      <select class="form-select" id="role" [(ngModel)]="pegawai.role" name="role" required>
+        <option *ngFor="let role of roleOptions" [ngValue]="role.value">
+          {{ role.label }}
+        </option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="statusPegawai" class="form-label">Status Pegawai</label>
+      <select class="form-select" id="statusPegawai" [(ngModel)]="pegawai.statusPegawai" name="statusPegawai" required>
+        <option [ngValue]="'ACTIVE'">Active</option>
+        <option [ngValue]="'CDT'">CDT</option>
+        <option [ngValue]="'CUTI'">Cuti</option>
+        <option [ngValue]="'RESIGN'">Resign</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="branchId" class="form-label">Cabang</label>
+      <select class="form-select" id="branchId" [(ngModel)]="pegawai.branchId" name="branchId" required>
+        <option *ngFor="let branch of branches" [ngValue]="branch.id">
+          {{ branch.name }}
+        </option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+      <span *ngIf="!isLoading">Simpan</span>
+      <span *ngIf="isLoading">
+        <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+        Menyimpan...
+      </span>
+    </button>
+  </form>
 </div>

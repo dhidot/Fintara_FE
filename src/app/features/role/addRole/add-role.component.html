@@ -1,0 +1,27 @@
+<div class="container mt-4">
+  <h4>Tambah Role Baru</h4>
+
+  <form (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label for="roleName" class="form-label">Nama Role</label>
+      <input type="text" id="roleName" class="form-control" [(ngModel)]="roleName" name="roleName" required />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Fitur Akses</label>
+      <div class="row">
+        <div class="col-md-4 col-sm-6" *ngFor="let feature of allFeatures">
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" [id]="feature.id" [value]="feature.id"
+              (change)="onFeatureChange($event, feature.id)" />
+            <label class="form-check-label" [for]="feature.id">
+              {{ feature.displayName }}
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Simpan</button>
+  </form>
+</div>

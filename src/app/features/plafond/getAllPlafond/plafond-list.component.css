@@ -1,0 +1,28 @@
+.card-title {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.card-footer button {
+  transition: 0.3s;
+}
+
+.card-footer button:hover {
+  transform: scale(1.05);
+}
+
+.bg-bronze {
+  background: linear-gradient(135deg, #cd7f32, #a97142);
+}
+
+.bg-silver {
+  background: linear-gradient(135deg, #c0c0c0, #a9a9a9);
+}
+
+.bg-gold {
+  background: linear-gradient(135deg, #ffd700, #daa520);
+}
+
+.bg-platinum {
+  background: linear-gradient(135deg, #e5e4e2, #c0c0c0);
+}

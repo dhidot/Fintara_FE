@@ -1,0 +1,38 @@
+<div class="container mt-4">
+  <h4 class="mb-3">Daftar Cabang</h4>
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <button class="btn btn-outline-primary" [routerLink]="['/branches/add']">
+      + Tambah Cabang
+    </button>
+
+    <div class="d-flex align-items-center">
+      <div class="input-group" style="max-width: 300px;">
+        <input type="text" class="form-control" placeholder="Cari cabang..." [(ngModel)]="searchTerm"
+          (input)="filterBranches()" />
+        <span class="input-group-text">
+          <i class="bi bi-search"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Indicator -->
+  <app-loading *ngIf="isLoading" message="Memuat data cabang..."></app-loading>
+
+  <!-- Table -->
+  <ngx-datatable *ngIf="!isLoading" class="bootstrap" [rows]="filteredBranches" [columnMode]="'force'"
+    [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [scrollbarH]="true"
+    style="min-height: 400px;">
+    <ngx-datatable-column name="Nama" prop="name" [sortable]="true" [minWidth]="150"></ngx-datatable-column>
+    <ngx-datatable-column name="Alamat" prop="address" [sortable]="true" [minWidth]="200"></ngx-datatable-column>
+    <ngx-datatable-column name="Latitude" prop="latitude" [sortable]="true" [minWidth]="120"></ngx-datatable-column>
+    <ngx-datatable-column name="Longitude" prop="longitude" [sortable]="true" [minWidth]="120"></ngx-datatable-column>
+
+    <ngx-datatable-column name="Aksi" [minWidth]="120">
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <app-table-action-buttons [showEdit]="true" (editClicked)="onEdit(row)"></app-table-action-buttons>
+      </ng-template>
+    </ngx-datatable-column>
+  </ngx-datatable>
+</div>

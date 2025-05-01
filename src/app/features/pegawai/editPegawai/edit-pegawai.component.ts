@@ -98,17 +98,11 @@ export class EditPegawaiComponent implements OnInit {
 
     this.pegawaiService.updatePegawaiDetails(this.idPegawai, request).subscribe({
       next: (response) => {
-        this.toastr.success(response.message, 'Success', {
-          positionClass: 'toast-bottom-right',
-          progressBar: true
-        });
+        this.toastr.success(response.message, 'Success')
         this.router.navigate(['/pegawai']);
       },
       error: (error) => {
-        this.toastr.error(error.message || 'Gagal memperbarui data pegawai.', 'Error', {
-          positionClass: 'toast-bottom-right',
-          progressBar: true
-        });
+        this.toastr.error(error.message || 'Gagal memperbarui data pegawai.', 'Error')
         this.isLoading = false;
       },
       complete: () => {

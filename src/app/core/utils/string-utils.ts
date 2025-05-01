@@ -23,4 +23,15 @@ export class StringUtils {
   static normalizeFeatureName(name: string): string {
     return name.trim().toUpperCase().replace(/\s+/g, '_');
   }
+
+  static formatJenisKelamin(jk: string): string {
+    switch (jk) {
+      case 'LAKI_LAKI':
+        return 'Laki-laki';
+      case 'PEREMPUAN':
+        return 'Perempuan';
+      default:
+        return 'Tidak Diketahui';
+    }
+  }
 }

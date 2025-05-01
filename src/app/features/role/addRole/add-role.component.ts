@@ -5,8 +5,10 @@ import { Router } from '@angular/router';
 import { RoleService } from '../../../core/services/role.service';
 import { FeatureService } from '../../../core/services/feature.service';
 import { ToastrService } from 'ngx-toastr';
-import { Feature } from '../../../core/models/feature-request.dto';
 import { StringUtils } from '../../../core/utils/string-utils';
+import { FeatureWithDisplayName } from '../../../core/models/feature-with-display-name.dto';
+import { Feature } from '../../../core/models/feature-request.dto';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-role-create',
@@ -16,76 +18,83 @@ import { StringUtils } from '../../../core/utils/string-utils';
 })
 export class AddRoleComponent implements OnInit {
   roleName: string = '';
-  allFeatures: any[] = [];
+  // allFeatures: FeatureWithDisplayName[] = [];
+  groupedFeatures: Record<string, FeatureWithDisplayName[]> = {};
   selectedFeatureIds: string[] = [];
   stringUtils = StringUtils;
+  isLoading = false; // Mengganti isSubmitting menjadi isLoading
+  objectKeys = Object.keys;
 
   constructor(
     private roleService: RoleService,
     private featureService: FeatureService,
     private toastr: ToastrService,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
     this.loadFeatures();
   }
 
-  loadFeatures(): void {
-    this.featureService.getAllFeatures().subscribe({
-      next: (features) => {
-        // Menambahkan displayName secara dinamis
-        this.allFeatures = features.map((feature: any) => ({
+  async loadFeatures(): Promise<void> {
+    try {
+      const grouped: Record<string, Feature[]> = await firstValueFrom(this.featureService.getAllGroupedFeatures());
+      console.log('Grouped Features:', grouped);
+      const transformed: Record<string, FeatureWithDisplayName[]> = {};
+
+      Object.entries(grouped).forEach(([category, features]) => {
+        transformed[category] = features.map(feature => ({
           ...feature,
           displayName: StringUtils.formatFeatureName(feature.name)
         }));
-      },
-      error: () => this.toastr.error('Gagal memuat fitur')
-    });
+      });
+
+      this.groupedFeatures = transformed;
+
+    } catch (error: any) {
+      this.toastr.error(error.error?.message || 'Gagal memuat fitur');
+    }
   }
 
   onFeatureChange(event: any, featureId: string): void {
     if (event.target.checked) {
       this.selectedFeatureIds.push(featureId);
     } else {
-      const index = this.selectedFeatureIds.indexOf(featureId);
-      if (index !== -1) {
-        this.selectedFeatureIds.splice(index, 1);
-      }
+      this.selectedFeatureIds = this.selectedFeatureIds.filter(id => id !== featureId);
     }
   }
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     if (!this.roleName.trim()) {
       this.toastr.warning('Nama role tidak boleh kosong');
       return;
     }
-    // Langkah pertama: buat role
-    this.roleService.createRole({ name: StringUtils.normalizeRoleName }).subscribe({
-      next: (createdRole) => {
-        // Role berhasil dibuat, sekarang ambil roleId
-        const roleId = createdRole.id;
 
-        // Langkah kedua: assign fitur ke role
-        if (roleId) {
-          this.roleService.addRoleWithFeatures(roleId, this.selectedFeatureIds).subscribe({
-            next: (res) => {
-              console.log('Assign feature response:', res);
-              this.toastr.success('Role berhasil dibuat dan fitur ditambahkan');
-              this.router.navigate(['/role']);
-            },
-            error: (err) => {
-              console.error('Assign error:', err);
-              this.toastr.error(err.error.message || 'Gagal assign fitur ke role');
-            }
-          });
-        } else {
-          this.toastr.error('Role ID tidak ditemukan');
-        }
-      },
-      error: (err) => {
-        this.toastr.error(err.error.message || 'Gagal membuat role');
+    this.isLoading = true; // Mengubah status menjadi loading
+
+    try {
+      // Normalisasi nama role
+      const normalizedRoleName = StringUtils.normalizeRoleName(this.roleName, false);
+
+      // Langkah pertama: buat role
+      const createdRole = await firstValueFrom(this.roleService.createRole({ name: normalizedRoleName }));
+
+      if (!createdRole?.id) {
+        throw new Error('Role ID tidak ditemukan');
       }
-    });
+
+      // Langkah kedua: assign fitur ke role
+      await firstValueFrom(this.roleService.addRoleWithFeatures(createdRole.id, this.selectedFeatureIds));
+
+      this.toastr.success('Role berhasil dibuat dan fitur ditambahkan');
+      this.router.navigate(['/roles']);
+
+    } catch (error: any) {
+      console.error('Error:', error);
+      this.toastr.error(error.error?.message || error.message || 'Terjadi kesalahan');
+
+    } finally {
+      this.isLoading = false; // Mengubah status kembali ke false setelah selesai
+    }
   }
 }

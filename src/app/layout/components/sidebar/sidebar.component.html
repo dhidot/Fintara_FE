@@ -1,52 +1,51 @@
 <!-- src/app/layout/components/sidebar/sidebar.component.html -->
-<nav class="sidebar p-3" style="background-color: #0055A4;">
-  <h4 class="mb-4 text-center text-white">SakuBCAFE</h4>
+<nav class="sidebar" [@slideInOut]="stateName">
+  <div class="d-flex align-items-center justify-content-center mb-4">
+    <img src="assets/FINTARA.png" alt="Logo" style="width: 50px; height: 50px;" class="me-2" />
+    <h4 class="mb-0 text-white">FINTARA</h4>
+  </div>
   <ul class="nav flex-column">
-    <li class="nav-item mb-2">
-      <a class="nav-link text-white" routerLink="/dashboard" routerLinkActive="active">
-        <i class="bi bi-house-door-fill me-2"></i> Dashboard
-      </a>
-    </li>
+    <app-menu-item *ngIf="hasFeature('FEATURE_DASHBOARD')" label="Dashboard" icon="bi bi-house-door-fill me-2"
+      routerLink="/dashboard" feature="FEATURE_DASHBOARD">
+    </app-menu-item>
 
-    <li *ngIf="hasFeature('FEATURE_GET_ALL_EMPLOYEE_ACCESS')" class="nav-item mb-2">
-      <a class="nav-link text-white" routerLink="/pegawai" routerLinkActive="active">
-        <i class="bi bi-people-fill me-2"></i> Pegawai
-      </a>
-    </li>
+    <app-menu-item *ngIf="hasFeature('FEATURE_GET_ALL_EMPLOYEE')" label="Pegawai" icon="bi-people-fill me-2"
+      routerLink="/pegawai" feature="FEATURE_GET_ALL_EMPLOYEE">
+    </app-menu-item>
 
-    <li *ngIf="hasFeature('FEATURE_GET_ALL_CUSTOMER_ACCESS')" class="nav-item mb-2">
-      <a class="nav-link text-white" routerLink="/customer" routerLinkActive="active">
-        <i class="bi bi-people me-2"></i> Customer
-      </a>
-    </li>
+    <app-menu-item *ngIf="hasFeature('FEATURE_GET_ALL_CUSTOMER')" label="Customer" icon="bi-people me-2"
+      routerLink="/customer" feature="FEATURE_GET_ALL_CUSTOMER">
+    </app-menu-item>
 
-    <li *ngIf="hasFeature('FEATURE_GET_ALL_BRANCHES_ACCESS')" class="nav-item mb-2">
-      <a class="nav-link text-white" routerLink="/branches" routerLinkActive="active">
-        <i class="bi bi-diagram-3-fill me-2"></i> Cabang
-      </a>
-    </li>
+    <app-menu-item *ngIf="hasFeature('FEATURE_GET_ALL_BRANCHES')" label="Cabang" icon="bi-diagram-3-fill me-2"
+      routerLink="/branches" feature="FEATURE_GET_ALL_BRANCHES">
+    </app-menu-item>
 
-    <li *ngIf="hasFeature('FEATURE_ROLE_ACCESS')" class="nav-item mb-2">
-      <a class="nav-link text-white" routerLink="/roles" routerLinkActive="active">
-        <i class="bi bi-shield-lock-fill me-2"></i> Role
-      </a>
-    </li>
+    <app-menu-item *ngIf="hasFeature('FEATURE_GET_ALL_ROLE')" label="Role" icon="bi-shield-lock-fill me-2"
+      routerLink="/roles" feature="FEATURE_GET_ALL_ROLE">
+    </app-menu-item>
 
-    <li *ngIf="hasFeature('FEATURE_PLAFOND_ACCESS')" class="nav-item mb-2">
-      <a class="nav-link text-white" routerLink="/plafonds" routerLinkActive="active">
-        <i class="bi bi-credit-card-fill me-2"></i> Plafond
-      </a>
-    </li>
+    <app-menu-item *ngIf="hasFeature('FEATURE_GET_ALL_PLAFOND')" label="Plafond" icon="bi-credit-card-fill me-2"
+      routerLink="/plafonds" feature="FEATURE_GET_ALL_PLAFOND">
+    </app-menu-item>
 
-    <li *ngIf="hasFeature('FEATURE_APPROVAL_MARKETING')" class="nav-item mb-2">
-      <a class="nav-link text-white" routerLink="/loan-request/marketing/all" routerLinkActive="active">
-        <i class="bi bi-people me-2"></i> Loan Req Marketing
-      </a>
-    </li>
+    <app-dropdown *ngIf="hasFeature('FEATURE_APPROVAL_MARKETING')" [label]="'Loan Request'" [items]="[
+        { label: 'All Requests', link: '/loan-request/marketing/all' },
+        { label: 'Riwayat Approval', link: '/loan-approvals/history' }
+      ]" [isExpanded]="dropdowns.marketing" (toggle)="toggleDropdown('marketing')">
+    </app-dropdown>
 
-    <li *ngIf="hasFeature('FEATURE_APPROVAL_BM')" class="nav-item mb-2">
-      <a class="nav-link text-white" routerLink="/loan-request/branch-manager/all" routerLinkActive="active">
-        <i class="bi bi-people me-2"></i> Loan Req Branch Manager
-      </a>
+    <app-dropdown *ngIf="hasFeature('FEATURE_APPROVAL_BM')" [label]="'Loan Request'" [items]="[
+        { label: 'All Requests', link: '/loan-request/branch-manager/all' },
+        { label: 'Riwayat Approval', link: '/loan-approvals/history' }
+      ]" [isExpanded]="dropdowns.bm" (toggle)="toggleDropdown('bm')">
+    </app-dropdown>
+
+    <app-dropdown *ngIf="hasFeature('FEATURE_DISBURSE')" [label]="'Loan Request'" [items]="[
+        { label: 'All Requests', link: '/loan-request/back-office/all' },
+        { label: 'Riwayat Approval', link: '/loan-approvals/history' }
+      ]" [isExpanded]="dropdowns.backOffice" (toggle)="toggleDropdown('backOffice')">
+    </app-dropdown>
+
   </ul>
 </nav>

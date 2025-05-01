@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { BranchService } from '../../../core/services/branch.service';
 import { LoadingComponent } from 'src/app/shared/components/loading/loading.component';
@@ -21,7 +21,7 @@ export class ListBranchComponent implements OnInit {
   searchTerm: string = '';
   isLoading = true;
 
-  constructor(private branchService: BranchService, private toastr: ToastrService) {}
+  constructor(private branchService: BranchService, private toastr: ToastrService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadBranches();
@@ -43,7 +43,7 @@ export class ListBranchComponent implements OnInit {
   }
 
   onEdit(branch: any): void {
-    // Misalnya nanti mau navigasi ke /branch/edit/:id
+    this.router.navigate(['/branches/edit', branch.id]);
   }
 
   filterBranches(): void {

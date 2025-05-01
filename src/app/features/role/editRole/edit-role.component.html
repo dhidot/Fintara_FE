@@ -1,29 +1,62 @@
-<div class="container mt-3">
-  <h4 class="mb-3">Edit Role</h4>
+<div class="container mt-4">
+  <h4>Edit Role</h4>
 
   <form (ngSubmit)="onSubmit()">
-    <div class="form-group mb-3">
-      <label for="roleName">Nama Role</label>
-      <input type="text" class="form-control" id="roleName" [(ngModel)]="roleName" name="roleName" required />
+    <!-- Nama Role -->
+    <div class="mb-3">
+      <label for="roleName" class="form-label">Nama Role</label>
+      <input type="text" id="roleName" class="form-control" [(ngModel)]="roleName" name="roleName"
+        placeholder="Masukkan nama role" required [disabled]="isLoading" />
     </div>
 
-    <div class="form-group mb-3">
-      <label for="features">Pilih Fitur</label>
+    <!-- Checklist Fitur Grouped -->
+    <div class="mb-3">
+      <label class="form-label">Pilih Fitur Akses</label>
+
       <div class="row">
-        <!-- Loop untuk menampilkan fitur dalam 3 kolom -->
-        <div *ngFor="let feature of allFeatures" class="col-md-4">
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" [id]="feature.id"
-              [checked]="selectedFeatureIds.includes(feature.id)" (change)="onFeatureChange($event, feature.id)" />
-            <label class="form-check-label" [for]="feature.id">
-              {{ stringUtils.formatFeatureName(feature.name) }}
-            </label>
+        <div *ngFor="let category of objectKeys(categorizedFeatures)" class="col-md-4 mb-4">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <!-- Judul kategori -->
+              <h4 class="card-title text-white py-2 px-3 rounded" [ngClass]="{
+                'bg-primary': category === 'Plafond',
+                'bg-success': category === 'Role',
+                'bg-warning': category === 'Loan Request',
+                'bg-info': category === 'Loan Status',
+                'bg-dark': category === 'Customer',
+                'bg-secondary': category === 'Pegawai',
+                'bg-danger': category === 'Branch',
+                'bg-light': category === 'Dashboard',
+                'bg-muted': category === 'Approval History',
+                'bg-pink': category === 'Feature'
+              }">
+                <i class="bi bi-tag-fill"></i> {{ category }}
+              </h4>
+
+              <!-- Daftar fitur dalam kategori -->
+              <div *ngFor="let feature of categorizedFeatures[category]">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" [id]="feature.id"
+                    [checked]="selectedFeatureIds.includes(feature.id)" (change)="onFeatureChange($event, feature.id)"
+                    [disabled]="isLoading" />
+                  <label class="form-check-label" [for]="feature.id">
+                    {{ stringUtils.formatFeatureName(feature.name) }}
+                  </label>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-
-    <button type="submit" class="btn btn-primary">Simpan</button>
+    <!-- Submit Button -->
+    <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+      <span *ngIf="!isLoading">Simpan Perubahan</span>
+      <span *ngIf="isLoading">
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        Menyimpan...
+      </span>
+    </button>
   </form>
 </div>

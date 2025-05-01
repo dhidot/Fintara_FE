@@ -1,9 +1,14 @@
-<div class="container mt-3">
-  <h4 class="mb-3">Daftar Role</h4>
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4>
+      <i class="bi bi-shield-lock me-2 text-primary"></i>
+      Daftar Role
+    </h4>
+  </div>
 
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <button class="btn btn-outline-primary" [routerLink]="['/role/add']">
-      + Add Role
+    <button class="btn btn-outline-primary d-flex align-items-center gap-2" [routerLink]="['/roles/add']">
+      <i class="bi bi-plus-circle"></i> Tambah Role
     </button>
 
     <div class="d-flex align-items-center">
@@ -22,21 +27,30 @@
 
   <!-- Table -->
   <ngx-datatable *ngIf="!isLoading" class="bootstrap" [rows]="filteredRoles" [columnMode]="'force'" [headerHeight]="50"
-    [footerHeight]="50" [rowHeight]="'auto'" [limit]="10">
-    <ngx-datatable-column name="Nama Role" prop="name">
+    [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [scrollbarH]="true" style="min-height: 400px;">
+    <ngx-datatable-column name="Nama Role" prop="name" [sortable]="true" [minWidth]="200">
       <ng-template let-row="row" ngx-datatable-cell-template>
         {{ stringUtils.formatRoleName(row.name) }}
       </ng-template>
     </ngx-datatable-column>
-    <ngx-datatable-column name="Jumlah Fitur" [width]="150" prop="featureCount">
+
+    <ngx-datatable-column name="Jumlah Fitur" prop="featureCount" [sortable]="true" [minWidth]="150">
       <ng-template let-row="row" ngx-datatable-cell-template>
-        {{ row.featureCount }}
+        <span class="badge bg-secondary">{{ row.featureCount }}</span>
       </ng-template>
     </ngx-datatable-column>
+
     <ngx-datatable-column name="Aksi" [minWidth]="120">
       <ng-template let-row="row" ngx-datatable-cell-template>
-        <app-table-action-buttons [showEdit]="true" (editClicked)="onEdit(row)"></app-table-action-buttons>
+        <app-table-action-buttons [showEdit]="true" [showDelete]="true" (editClicked)="onEdit(row)"
+          (deleteClicked)="onDelete(row)"></app-table-action-buttons>
       </ng-template>
     </ngx-datatable-column>
   </ngx-datatable>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && filteredRoles.length === 0" class="text-center text-muted mt-5">
+    <i class="bi bi-inboxes fs-1 d-block mb-3"></i>
+    <p class="fs-5">Tidak ada role ditemukan.</p>
+  </div>
 </div>

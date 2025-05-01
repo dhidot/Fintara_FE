@@ -1,9 +1,14 @@
 <div class="container mt-4">
-  <h4 class="mb-3">Daftar Pegawai</h4>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4>
+      <i class="bi bi-people me-2 text-primary"></i>
+      Daftar Pegawai
+    </h4>
+  </div>
 
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <button class="btn btn-outline-primary" [routerLink]="['/pegawai/register']">
-      + Register Pegawai
+    <button class="btn btn-outline-primary d-flex align-items-center gap-2" [routerLink]="['/pegawai/register']">
+      <i class="bi bi-person-plus"></i> Register Pegawai
     </button>
 
     <div class="d-flex align-items-center">
@@ -21,17 +26,26 @@
   <app-loading *ngIf="isLoading" message="Memuat data pegawai..."></app-loading>
 
   <!-- Table -->
-  <ngx-datatable *ngIf="!isLoading" class="bootstrap" [rows]="filteredPegawaiList" [columnMode]="'force'"
+  <ngx-datatable #pegawaiTable *ngIf="!isLoading" class="bootstrap" [rows]="filteredPegawaiList" [columnMode]="'force'"
     [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="5" [scrollbarH]="true"
     style="min-height: 400px;">
-    <ngx-datatable-column name="Nama" prop="name" [sortable]="true" [minWidth]="150"></ngx-datatable-column>
-    <ngx-datatable-column name="NIP" prop="nip" [sortable]="true" [minWidth]="120"></ngx-datatable-column>
-    <ngx-datatable-column name="Email" prop="email" [sortable]="true" [minWidth]="180"></ngx-datatable-column>
-    <ngx-datatable-column name="Role" prop="role" [sortable]="true" [minWidth]="120"></ngx-datatable-column>
-    <ngx-datatable-column name="Cabang" prop="branchName" [sortable]="true" [minWidth]="120"></ngx-datatable-column>
-    <ngx-datatable-column name="Status" prop="statusPegawai" [sortable]="true" [minWidth]="100"></ngx-datatable-column>
 
-    <ngx-datatable-column name="Aksi" [minWidth]="120">
+    <ngx-datatable-column name="Nama" prop="name" [sortable]="true"></ngx-datatable-column>
+    <ngx-datatable-column name="NIP" prop="nip" [sortable]="true"></ngx-datatable-column>
+    <ngx-datatable-column name="Email" prop="email" [sortable]="true"></ngx-datatable-column>
+    <ngx-datatable-column name="Jenis Kelamin" prop="jenisKelamin" [sortable]="true"><ng-template let-row="row"
+        ngx-datatable-cell-template>
+        {{ stringUtils.formatJenisKelamin(row.jenisKelamin) }}
+      </ng-template></ngx-datatable-column>
+    <ngx-datatable-column name="Role" prop="role" [sortable]="true">
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        {{ stringUtils.formatRoleName(row.role) }}
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Cabang" prop="branchName" [sortable]="true"></ngx-datatable-column>
+    <ngx-datatable-column name="Status" prop="statusPegawai" [sortable]="true"></ngx-datatable-column>
+
+    <ngx-datatable-column name="Aksi">
       <ng-template let-row="row" ngx-datatable-cell-template>
         <app-table-action-buttons [showEdit]="true" (editClicked)="onEdit(row)"></app-table-action-buttons>
       </ng-template>

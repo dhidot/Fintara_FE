@@ -7,18 +7,23 @@ import { Feature } from '../../../core/models/feature-request.dto';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { StringUtils } from '../../../core/utils/string-utils';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-edit-role',
-  templateUrl: './edit-role.component.html',
+  standalone: true,
   imports: [CommonModule, FormsModule],
+  templateUrl: './edit-role.component.html',
 })
 export class EditRoleComponent implements OnInit {
   roleId: string = '';
   roleName: string = '';
   allFeatures: Feature[] = [];
+  categorizedFeatures: { [category: string]: Feature[] } = {};
   selectedFeatureIds: string[] = [];
   stringUtils = StringUtils;
+  isLoading = false;
+  objectKeys = Object.keys;
 
   constructor(
     private roleService: RoleService,
@@ -28,51 +33,41 @@ export class EditRoleComponent implements OnInit {
     private route: ActivatedRoute
   ) {}
 
-
   ngOnInit(): void {
     this.roleId = this.route.snapshot.paramMap.get('id') || '';
-    this.loadAllFeatures(); // Muat semua fitur saat komponen dimulai
-    this.loadRoleData(); // Muat data role berdasarkan roleId
+    this.loadAllFeatures(); // Memuat semua fitur
+    this.loadRoleData(); // Memuat data role yang sudah ada
   }
 
-  loadRoleData(): void {
-    // Ambil data fitur yang dimiliki role berdasarkan roleId
-    this.roleService.getFeaturesByRole(this.roleId).subscribe({
-      next: (features) => {
-        // Menandai fitur yang dimiliki role dan menandai yang tercentang
-        this.selectedFeatureIds = features.map(feature => feature.id);
-      },
-      error: () => this.toastr.error('Gagal memuat fitur untuk role ini.')
-    });
+  async loadRoleData(): Promise<void> {
+    try {
+      // Mengambil fitur berdasarkan roleId
+      const features = await firstValueFrom(this.roleService.getFeaturesByRole(this.roleId));
+      this.selectedFeatureIds = features.map(feature => feature.id);
 
-    // Ambil nama role dari backend
-    this.roleService.getRoleById(this.roleId).subscribe({
-      next: (role) => {
-        this.roleName = StringUtils.formatRoleName(role.name); // Mengisi nama role
-      },
-      error: () => this.toastr.error('Gagal memuat data role.')
-    });
+      // Mengambil data role berdasarkan roleId
+      const role = await firstValueFrom(this.roleService.getRoleById(this.roleId));
+      this.roleName = StringUtils.formatRoleName(role.name); // Format nama role
+    } catch (error: any) {
+      this.toastr.error(error.error?.message || 'Gagal memuat data role.');
+    }
   }
 
-  loadAllFeatures(): void {
-    // Ambil semua fitur yang tersedia
-    this.featureService.getAllFeatures().subscribe({
-      next: (features) => {
-        console.log('All Features:', features); // Periksa fitur yang diterima
-        this.allFeatures = features;
-      },
-      error: () => this.toastr.error('Gagal memuat fitur.')
-    });
+  async loadAllFeatures(): Promise<void> {
+    try {
+      const categorized = await firstValueFrom(this.featureService.getAllGroupedFeatures());
+      this.categorizedFeatures = categorized;
+    } catch (error: any) {
+      this.toastr.error(error.error?.message || 'Gagal memuat fitur.');
+    }
   }
 
   onFeatureChange(event: Event, featureId: string): void {
     const isChecked = (event.target as HTMLInputElement).checked;
 
     if (isChecked) {
-      // Jika dicentang, tambahkan fitur ke selectedFeatureIds
       this.selectedFeatureIds.push(featureId);
     } else {
-      // Jika tidak dicentang, hapus fitur dari selectedFeatureIds
       const index = this.selectedFeatureIds.indexOf(featureId);
       if (index !== -1) {
         this.selectedFeatureIds.splice(index, 1);
@@ -80,19 +75,30 @@ export class EditRoleComponent implements OnInit {
     }
   }
 
-  onSubmit(): void {
-    // Kirim data role dan fitur yang dipilih ke backend
-    this.roleService.updateRole(this.roleId, { name: StringUtils.normalizeRoleName(this.roleName), featureIds: this.selectedFeatureIds })
-      .subscribe({
-        next: () => {
-          this.toastr.success('Role berhasil diperbarui');
-          this.router.navigate(['/roles']);
-        },
-        error: (err) => {
-          // Tampilkan pesan error yang lebih detail
-          console.error('Error:', err);
-          this.toastr.error('Gagal memperbarui role: ' + (err.error?.message || 'Internal Server Error'));
-        }
-      });
+  async onSubmit(): Promise<void> {
+    if (!this.roleName.trim()) {
+      this.toastr.warning('Nama role tidak boleh kosong');
+      return;
+    }
+
+    this.isLoading = true; // Set loading state to true
+
+    try {
+      const normalizedRoleName = StringUtils.normalizeRoleName(this.roleName, false);
+
+      // Mengupdate role dan menambahkan fitur yang dipilih
+      await firstValueFrom(this.roleService.updateRole(this.roleId, {
+        name: normalizedRoleName,
+        featureIds: this.selectedFeatureIds
+      }));
+
+      this.toastr.success('Role berhasil diperbarui');
+      this.router.navigate(['/roles']);
+    } catch (error: any) {
+      console.error('Error:', error);
+      this.toastr.error(error.error?.message || error.message || 'Terjadi kesalahan');
+    } finally {
+      this.isLoading = false; // Set loading state to false
+    }
   }
 }

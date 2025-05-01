@@ -32,15 +32,15 @@ export class ListPlafondComponent implements OnInit {
   }
 
   goToAddPlafond(): void {
-    this.router.navigate(['/plafond/add']);
+    this.router.navigate(['/plafonds/add']);
   }
 
   editPlafond(plafond: any): void {
-    this.router.navigate(['/plafond/edit', plafond.id]);
+    this.router.navigate(['/plafonds/edit', plafond.id]);
   }
 
   goToEdit(name: string) {
-    this.router.navigate(['/plafond/edit', name]);
+    this.router.navigate(['/plafonds/edit', name]);
   }
 
   getCardClass(name: string): string {

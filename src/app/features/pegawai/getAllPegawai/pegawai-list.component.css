@@ -18,6 +18,10 @@
   background-color: #f1f1f1;
 }
 
+::ng-deep .datatable-footer {
+  display: block !important;
+}
+
 :host ::ng-deep .datatable-body {
   font-size: 14px;
 }

@@ -1,33 +1,36 @@
-<div class="container mt-3">
-  <h4 class="mb-3">Edit Branch</h4>
+<div class="container mt-4">
+  <h4 class="fw-bold">Edit Branch</h4>
 
   <form (ngSubmit)="onSubmit()" #editBranchForm="ngForm">
-    <div class="form-group">
-      <label for="name">Nama Branch</label>
+    <div class="mb-3">
+      <label for="name" class="form-label fw-semibold">Nama Branch</label>
       <input type="text" id="name" class="form-control" [(ngModel)]="branch.name" name="name" required />
     </div>
 
-    <div class="form-group">
-      <label for="address">Alamat Branch</label>
+    <div class="mb-3">
+      <label for="address" class="form-label fw-semibold">Alamat Branch</label>
       <input type="text" id="address" class="form-control" [(ngModel)]="branch.address" name="address" required />
     </div>
 
-    <div class="form-group">
-      <label for="latitude">Latitude</label>
-      <input type="number" id="latitude" class="form-control" [(ngModel)]="branch.latitude" name="latitude"
-        step="any" />
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label for="latitude" class="form-label fw-semibold">Latitude</label>
+        <input type="number" id="latitude" class="form-control" [(ngModel)]="branch.latitude" name="latitude"
+          step="any" />
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label for="longitude" class="form-label fw-semibold">Longitude</label>
+        <input type="number" id="longitude" class="form-control" [(ngModel)]="branch.longitude" name="longitude"
+          step="any" />
+      </div>
     </div>
 
-    <div class="form-group">
-      <label for="longitude">Longitude</label>
-      <input type="number" id="longitude" class="form-control" [(ngModel)]="branch.longitude" name="longitude"
-        step="any" />
+    <div class="text-end">
+      <button type="submit" class="btn btn-primary px-4" [disabled]="editBranchForm.invalid || isLoading">
+        <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+        Simpan
+      </button>
     </div>
-
-    <button type="submit" class="btn btn-primary" [disabled]="editBranchForm.invalid || isLoading">
-      <!-- Tampilkan spinner jika loading -->
-      <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-      Simpan
-    </button>
   </form>
 </div>

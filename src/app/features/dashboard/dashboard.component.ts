@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { DashboardService } from 'src/app/core/services/dashboard.service';
 import { DashboardSummary } from '../../core/models/dashboard-summary.dto';
-import { CommonModule } from '@angular/common';
+import { DashboardCard } from '../../core/models/dashboard-card.dto';
 import { LoadingComponent } from 'src/app/shared/components/loading/loading.component';
 
 @Component({
@@ -14,7 +15,7 @@ import { LoadingComponent } from 'src/app/shared/components/loading/loading.comp
 export class DashboardComponent implements OnInit {
   summary: DashboardSummary | null = null;
   isLoading = true;
-  cards: any[] = [];
+  cards: DashboardCard[] = [];
   features: string[] = [];
 
   constructor(private dashboardService: DashboardService) {}
@@ -41,49 +42,44 @@ export class DashboardComponent implements OnInit {
   setupCards(): void {
     if (!this.summary) return;
 
-    if (this.hasFeature('FEATURE_ROLE_ACCESS')) {
-      this.cards.push({
+    const allCards: DashboardCard[] = [
+      {
         title: 'Total Role',
         value: this.summary.totalRoles,
         icon: 'bi-shield-lock',
-        bgColor: 'bg-primary'
-      });
-    }
-
-    if (this.hasFeature('FEATURE_GET_ALL_EMPLOYEE_ACCESS')) {
-      this.cards.push({
+        bgColor: 'card-role',
+        feature: 'FEATURE_GET_ALL_ROLE'
+      },
+      {
         title: 'Total Pegawai',
         value: this.summary.totalPegawai,
         icon: 'bi-person-badge',
-        bgColor: 'bg-success'
-      });
-    }
-
-    if (this.hasFeature('FEATURE_GET_ALL_CUSTOMER_ACCESS')) {
-      this.cards.push({
+        bgColor: 'card-pegawai',
+        feature: 'FEATURE_GET_ALL_EMPLOYEE'
+      },
+      {
         title: 'Total Customer',
         value: this.summary.totalCustomers,
         icon: 'bi-people',
-        bgColor: 'bg-info'
-      });
-    }
-
-    if (this.hasFeature('FEATURE_GET_ALL_BRANCHES_ACCESS')) {
-      this.cards.push({
+        bgColor: 'card-customer',
+        feature: 'FEATURE_GET_ALL_CUSTOMER'
+      },
+      {
         title: 'Total Cabang',
         value: this.summary.totalBranches,
         icon: 'bi-building',
-        bgColor: 'bg-warning'
-      });
-    }
-
-    if (this.hasFeature('FEATURE_PLAFOND_ACCESS')) {
-      this.cards.push({
+        bgColor: 'card-cabang',
+        feature: 'FEATURE_GET_ALL_BRANCHES'
+      },
+      {
         title: 'Total Plafond',
         value: this.summary.totalPlafonds,
         icon: 'bi-cash-coin',
-        bgColor: 'bg-danger'
-      });
-    }
+        bgColor: 'card-plafond',
+        feature: 'FEATURE_GET_ALL_PLAFOND'
+      }
+    ];
+
+    this.cards = allCards.filter(card => this.hasFeature(card.feature));
   }
 }

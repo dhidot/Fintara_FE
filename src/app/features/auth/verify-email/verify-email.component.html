@@ -1,0 +1,36 @@
+<div class="d-flex justify-content-center align-items-center vh-100 flex-column text-center px-3" *ngIf="status">
+  <svg width="200" height="200" viewBox="0 0 24 24" fill="none" class="mb-4 animate__animated" [ngClass]="{
+         'animate__bounceIn': status === 'success',
+         'animate__shakeX': status === 'error'
+       }">
+    <ng-container *ngIf="status === 'success'; else errorIcon">
+      <circle cx="12" cy="12" r="10" stroke="#28a745" stroke-width="2" fill="none" />
+      <path d="M8 12l2 2l4 -4" stroke="#28a745" stroke-width="2" fill="none" stroke-linecap="round"
+        stroke-linejoin="round" />
+    </ng-container>
+    <ng-template #errorIcon>
+      <circle cx="12" cy="12" r="10" stroke="#ffc107" stroke-width="2" fill="none" />
+      <line x1="8" y1="8" x2="16" y2="16" stroke="#ffc107" stroke-width="2" stroke-linecap="round" />
+      <line x1="16" y1="8" x2="8" y2="16" stroke="#ffc107" stroke-width="2" stroke-linecap="round" />
+    </ng-template>
+  </svg>
+
+  <h1 class="display-3 fw-bold"
+    [ngClass]="{ 'text-success': status === 'success', 'text-warning': status === 'error' }">
+    {{ status === 'success' ? 'Berhasil!' : 'Gagal!' }}
+  </h1>
+
+  <p class="fs-4">{{ message }}</p>
+
+  <p class="text-muted mt-2" *ngIf="status === 'success'">
+    Anda akan diarahkan ke halaman login dalam {{ countdown }} detik...
+  </p>
+
+  <a routerLink="/login" class="btn btn-primary mt-3" *ngIf="status === 'success'">
+    Masuk Sekarang
+  </a>
+
+  <a routerLink="/" class="btn btn-outline-warning mt-3" *ngIf="status === 'error'">
+    Kembali ke Beranda
+  </a>
+</div>

@@ -15,4 +15,9 @@ export class TableActionButtonsComponent {
   @Output() editClicked = new EventEmitter<void>();
   @Output() deleteClicked = new EventEmitter<void>();
   @Output() detailClicked = new EventEmitter<void>();
+
+  delete() {
+    this.deleteClicked.emit();
+  }
 }
+

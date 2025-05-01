@@ -1,16 +1,28 @@
 <div class="container mt-4">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h4 class="fw-bold">Daftar Plafond</h4>
-    <button class="btn btn-primary" (click)="goToAddPlafond()">
-      <i class="bi bi-plus-circle me-1"></i> Tambah Plafond
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4>
+      <i class="bi bi-cash-stack me-2 text-primary"></i>
+      Daftar Plafond
+    </h4>
+  </div>
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <button class="btn btn-outline-primary d-flex align-items-center gap-2" (click)="goToAddPlafond()">
+      <i class="bi bi-plus-circle"></i> Tambah Plafond
     </button>
   </div>
 
-  <!-- Loading indicator -->
+  <!-- Loading Indicator -->
   <app-loading *ngIf="isLoading" message="Memuat data plafond..."></app-loading>
 
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && plafonds.length === 0" class="text-center text-muted mt-5">
+    <i class="bi bi-inboxes fs-1 d-block mb-3"></i>
+    <p class="fs-5">Tidak ada data plafond ditemukan.</p>
+  </div>
+
   <!-- Data Plafond Cards -->
-  <div class="row">
+  <div class="row" *ngIf="!isLoading && plafonds.length > 0">
     <div class="col-md-6 col-lg-4 mb-4" *ngFor="let plafond of plafonds">
       <div class="card shadow-lg border-0 rounded-4 h-100" [ngClass]="getCardClass(plafond.name)">
         <div class="card-body p-4">

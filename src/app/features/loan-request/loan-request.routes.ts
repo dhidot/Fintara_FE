@@ -6,6 +6,7 @@ import { featureGuard } from 'src/app/core/guards/feature.guard';
 import { BmReviewComponent } from './branch-manager/review-bm/review-bm.component';
 import { LoanRequestBackOfficeComponent } from './back-office/getAll/loan-request-back-office.component';
 import { LoanRequestDisburseComponent } from './back-office/disburse/disburse-back-office.component';
+import { FirstLoginGuard } from 'src/app/core/guards/first-login.guard';
 
 export const loanRequestRoutes: Routes = [
   {
@@ -14,12 +15,12 @@ export const loanRequestRoutes: Routes = [
       {
         path: 'all',
         component: LoanRequestMarketingComponent,
-        canActivate: [featureGuard('FEATURE_APPROVAL_MARKETING')],
+        canActivate: [FirstLoginGuard, featureGuard('FEATURE_APPROVAL_MARKETING')],
       },
       {
         path: ':id',
         component: MarketingReviewComponent,
-        canActivate: [featureGuard('FEATURE_APPROVAL_MARKETING')],
+        canActivate: [FirstLoginGuard, featureGuard('FEATURE_APPROVAL_MARKETING')],
       },
     ]
   },
@@ -29,12 +30,12 @@ export const loanRequestRoutes: Routes = [
       {
         path: 'all',
         component: LoanRequestBmComponent,
-        canActivate: [featureGuard('FEATURE_APPROVAL_BM')],
+        canActivate: [FirstLoginGuard, featureGuard('FEATURE_APPROVAL_BM')],
       },
       {
         path: ':id',
         component: BmReviewComponent,
-        canActivate: [featureGuard('FEATURE_APPROVAL_BM')],
+        canActivate: [FirstLoginGuard, featureGuard('FEATURE_APPROVAL_BM')],
       },
     ]
   },
@@ -44,12 +45,12 @@ export const loanRequestRoutes: Routes = [
       {
         path: 'all',
         component: LoanRequestBackOfficeComponent,
-        canActivate: [featureGuard('FEATURE_DISBURSE')],
+        canActivate: [FirstLoginGuard, featureGuard('FEATURE_DISBURSE')],
       },
       {
         path: ':id',
         component: LoanRequestDisburseComponent,
-        canActivate: [featureGuard('FEATURE_DISBURSE')],
+        canActivate: [FirstLoginGuard, featureGuard('FEATURE_DISBURSE')],
       },
     ]
   }

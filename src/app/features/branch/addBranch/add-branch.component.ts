@@ -1,16 +1,22 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { BranchService } from '../../../core/services/branch.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { BranchFormComponent } from '../../../shared/components/branch-form/branch-form.component'; // 🆕
 
 @Component({
   selector: 'app-branch-add',
   standalone: true,
-  imports: [CommonModule, FormsModule],
-  templateUrl: './add-branch.component.html',
-  styleUrls: ['./add-branch.component.css']
+  imports: [CommonModule, BranchFormComponent],
+  template: `
+    <app-branch-form
+      [branch]="branch"
+      [title]="'Tambah Cabang Baru'"
+      [submitButtonText]="'Simpan Cabang'"
+      (formSubmit)="onSubmit()"
+    ></app-branch-form>
+  `
 })
 export class AddBranchComponent {
   branch = {
@@ -32,8 +38,9 @@ export class AddBranchComponent {
         this.toastr.success('Cabang berhasil ditambahkan', 'Sukses');
         this.router.navigate(['/branches']);
       },
-      error: () => {
-        this.toastr.error('Gagal menambahkan cabang', 'Error');
+      error: (error) => {
+        const errorMessage = error?.error?.message || 'Gagal menambahkan cabang';
+        this.toastr.error(errorMessage, 'Error');
       }
     });
   }

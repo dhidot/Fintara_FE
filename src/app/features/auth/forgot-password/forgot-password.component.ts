@@ -3,10 +3,12 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../../core/services/auth.service';
+import { AuthWrapperComponent } from '../auth-wrapper.component';
+
 @Component({
   selector: 'app-forgot-password',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, AuthWrapperComponent],
   templateUrl: './forgot-password.component.html',
 })
 export class ForgotPasswordComponent {
@@ -36,6 +38,7 @@ export class ForgotPasswordComponent {
           progressBar: true,
         });
         this.form.reset();
+        this.isLoading = false;
       },
       error: (error) => {
         const msg = error?.error?.message || 'Terjadi kesalahan.';

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable, throwError, catchError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Feature } from '../models/feature-request.dto';
 
@@ -8,14 +8,20 @@ import { Feature } from '../models/feature-request.dto';
   providedIn: 'root'
 })
 export class FeatureService {
-  private baseUrl = `${environment.apiBaseUrl}/features`;  // Pastikan API URL sesuai dengan backend
+  private baseUrl = `${environment.featuresBaseURL}`;
 
   constructor(private http: HttpClient) {}
 
+  private handleError(error: any): Observable<never> {
+    console.error('FeatureService error:', error);
+    return throwError(() => new Error(error.message || 'Terjadi kesalahan pada permintaan.'));
+  }
+
   getAllFeatures(): Observable<Feature[]> {
-    const token = localStorage.getItem('access_token');
-    return this.http.get<Feature[]>(`${this.baseUrl}/all`, {
-      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
-    });
+    return this.http.get<Feature[]>(`${this.baseUrl}/all`).pipe(catchError(this.handleError));
+  }
+
+  getAllGroupedFeatures(): Observable<Record<string, Feature[]>> {
+    return this.http.get<Record<string, Feature[]>>(`${this.baseUrl}/grouped`).pipe(catchError(this.handleError));
   }
 }

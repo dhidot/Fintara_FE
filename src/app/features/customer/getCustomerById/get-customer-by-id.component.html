@@ -1,0 +1,26 @@
+<div class="container mt-4" *ngIf="customer">
+  <h4>Detail Customer</h4>
+  <ul class="list-group">
+    <li class="list-group-item"><strong>Nama:</strong> {{ customer.name }}</li>
+    <li class="list-group-item"><strong>Email:</strong> {{ customer.email }}</li>
+    <li class="list-group-item"><strong>Role:</strong> {{ customer.role }}</li>
+
+    <!-- Data CustomerDetails -->
+    <li class="list-group-item"><strong>NIK:</strong> {{ customer.customerDetails?.nik || '-' }}</li>
+    <li class="list-group-item"><strong>Tempat Tanggal Lahir:</strong> {{ customer.customerDetails?.ttl || '-' }}</li>
+    <li class="list-group-item"><strong>Alamat:</strong> {{ customer.customerDetails?.alamat || '-' }}</li>
+    <li class="list-group-item"><strong>No. Telepon:</strong> {{ customer.customerDetails?.noTelp || '-' }}</li>
+    <li class="list-group-item"><strong>Nama Ibu Kandung:</strong> {{ customer.customerDetails?.namaIbuKandung || '-' }}
+    </li>
+    <li class="list-group-item"><strong>Pekerjaan:</strong> {{ customer.customerDetails?.pekerjaan || '-' }}</li>
+    <li class="list-group-item"><strong>Gaji:</strong> {{ customer.customerDetails?.gaji | currency:'IDR':'symbol' }}
+    </li>
+    <li class="list-group-item"><strong>No. Rekening:</strong> {{ customer.customerDetails?.noRek || '-' }}</li>
+    <li class="list-group-item"><strong>Status Rumah:</strong> {{ customer.customerDetails?.statusRumah || '-' }}</li>
+
+    <!-- Info Plafond -->
+    <li class="list-group-item"><strong>Plafond:</strong> {{ customer.customerDetails?.plafond?.name || '-' }}</li>
+    <li class="list-group-item"><strong>Sisa Plafond:</strong> {{ customer.customerDetails?.remainingPlafond |
+      currency:'IDR':'symbol' }}</li>
+  </ul>
+</div>

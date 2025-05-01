@@ -1,0 +1,6 @@
+<li *ngIf="hasFeature([feature])" class="nav-item mb-2">
+  <a class="nav-link text-white" [routerLink]="routerLink" [routerLinkActive]="['active']"
+    [routerLinkActiveOptions]="{ exact: false }">
+    <i class="bi" [ngClass]="icon"></i> {{ label }}
+  </a>
+</li>

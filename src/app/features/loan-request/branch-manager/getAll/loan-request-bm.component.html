@@ -1,50 +1,5 @@
 <div class="container mt-4">
-  <h4 class="mb-3">Daftar Pengajuan Pinjaman</h4>
-
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <div></div> <!-- Kosong atau bisa untuk tombol tambah jika diperlukan -->
-
-    <div class="d-flex align-items-center">
-      <div class="input-group" style="max-width: 300px;">
-        <input type="text" class="form-control" placeholder="Cari pengajuan..." [(ngModel)]="searchTerm"
-          (input)="filterRequests()" />
-        <span class="input-group-text">
-          <i class="bi bi-search"></i>
-        </span>
-      </div>
-    </div>
-  </div>
-
-  <app-loading *ngIf="isLoading" message="Memuat data pengajuan..."></app-loading>
-
-  <ngx-datatable *ngIf="!isLoading" class="bootstrap" [rows]="filteredLoanRequests" [columnMode]="'force'"
-    [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [scrollbarH]="true"
-    style="min-height: 400px">
-
-    <ngx-datatable-column name="Customer" prop="customerName" [sortable]="true" [minWidth]="150"></ngx-datatable-column>
-
-    <ngx-datatable-column name="Jumlah Pinjaman" [sortable]="true" [minWidth]="120">
-      <ng-template let-row="row" ngx-datatable-cell-template>
-        {{ row.amount | currency:'IDR':'symbol':'1.0-0' }}
-      </ng-template>
-    </ngx-datatable-column>
-
-    <ngx-datatable-column name="Tenor" prop="tenor" [sortable]="true" [minWidth]="80"></ngx-datatable-column>
-
-    <ngx-datatable-column name="Status" prop="status" [sortable]="true" [minWidth]="120"></ngx-datatable-column>
-
-    <ngx-datatable-column name="Tanggal Pengajuan" [sortable]="true" [minWidth]="150">
-      <ng-template let-row="row" ngx-datatable-cell-template>
-        {{ row.requestDate | date:'dd/MM/yyyy HH:mm' }}
-      </ng-template>
-    </ngx-datatable-column>
-
-    <ngx-datatable-column name="Aksi" [sortable]="false" [minWidth]="100">
-      <ng-template let-row="row" ngx-datatable-cell-template>
-        <button class="btn btn-sm btn-primary" (click)="goToReview(row.id)">
-          <i class="bi bi-search"></i> Review
-        </button>
-      </ng-template>
-    </ngx-datatable-column>
-  </ngx-datatable>
+  <h4>Daftar Pengajuan Pinjaman</h4>
+  <app-loan-request-list [loanRequests]="loanRequests" [isLoading]="isLoading" (viewDetails)="handleViewDetail($event)">
+  </app-loan-request-list>
 </div>

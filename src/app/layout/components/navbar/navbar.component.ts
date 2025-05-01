@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -13,8 +13,14 @@ import { AuthService } from 'src/app/core/services/auth.service';
 export class NavbarComponent implements OnInit {
   isLoggingOut = false;
   user: any = null;
+  @Output() toggle = new EventEmitter<void>();
+
 
   constructor(private authService: AuthService, private router: Router) {}
+
+  onToggleSidebar() {
+    this.toggle.emit();
+  }
 
   ngOnInit(): void {
     const userData = localStorage.getItem('user');
@@ -40,6 +46,7 @@ export class NavbarComponent implements OnInit {
   }
 
   goToProfile(): void {
-      this.router.navigate(['/profile']);
+      this.router.navigate(['/pegawai/profile']);
   }
+
 }

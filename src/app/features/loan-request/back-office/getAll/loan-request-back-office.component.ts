@@ -1,24 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { LoanRequestService } from 'src/app/core/services/loan-request.service';
 import { LoanRequestApprovalDTO } from 'src/app/core/models/loan-request-approval.dto';
-import { LoadingComponent } from 'src/app/shared/components/loading/loading.component';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { LoanRequestListComponent } from 'src/app/shared/components/loan-request-list/loan-request-list.component';
 
 @Component({
-  selector: 'app-loan-request-disburse',
+  selector: 'app-loan-request-back-office-all',
   standalone: true,
-  imports: [LoadingComponent, CommonModule, FormsModule, NgxDatatableModule],
-  templateUrl: './loan-request-back-office.component.html',
-  styleUrls: ['./loan-request-back-office.component.css']
+  imports: [CommonModule, LoanRequestListComponent],
+  template: `
+    <app-loan-request-list
+      [loanRequests]="loanRequests"
+      [isLoading]="isLoading"
+      (viewDetails)="onViewDetail($event)">
+    </app-loan-request-list>
+  `
 })
 export class LoanRequestBackOfficeComponent implements OnInit {
   loanRequests: LoanRequestApprovalDTO[] = [];
-  filteredLoanRequests: LoanRequestApprovalDTO[] = [];
-  searchTerm: string = '';
-  isLoading: boolean = true;
+  isLoading = true;
 
   constructor(
     private loanRequestService: LoanRequestService,
@@ -26,33 +27,19 @@ export class LoanRequestBackOfficeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.fetchLoanRequests();
-  }
-
-  fetchLoanRequests(): void {
-    this.isLoading = true;
     this.loanRequestService.getLoanRequestsForBackOffice().subscribe({
       next: (data) => {
         this.loanRequests = data;
-        this.filteredLoanRequests = data;
         this.isLoading = false;
       },
-      error: (error) => {
-        console.error('Error fetching loan requests:', error);
+      error: (err) => {
+        console.error('Gagal mengambil daftar pengajuan:', err);
         this.isLoading = false;
       }
     });
   }
 
-  filterRequests(): void {
-    const term = this.searchTerm.toLowerCase();
-    this.filteredLoanRequests = this.loanRequests.filter((req) =>
-      req.customerName?.toLowerCase().includes(term) ||
-      req.status?.toLowerCase().includes(term)
-    );
-  }
-
-  viewDetails(loanRequestId: string): void {
-    this.router.navigate([`/loan-request/back-office/${loanRequestId}`]); // Navigate to details page
+  onViewDetail(id: string) {
+    this.router.navigate(['/loan-request/back-office', id]);
   }
 }

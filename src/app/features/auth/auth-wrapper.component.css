@@ -1,0 +1,39 @@
+.card {
+  background-color: rgba(255, 255, 255, 0.95);
+  /* semi transparan */
+  border-radius: 16px;
+}
+
+.card-body {
+  padding: 30px;
+}
+
+.card-shadow {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.auth-background {
+  background-image: url('assets/background.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+button {
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background-color: #0055A4;
+  transform: scale(1.05);
+}
+
+.text-danger {
+  font-size: 0.875rem;
+  margin-top: 5px;
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+}

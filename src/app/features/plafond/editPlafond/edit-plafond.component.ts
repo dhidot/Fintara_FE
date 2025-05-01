@@ -14,6 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class EditPlafondComponent implements OnInit {
   plafondId: string = '';
+  isLoading = false;
   plafond: any = {
     name: '',
     maxAmount: 0,
@@ -47,13 +48,16 @@ export class EditPlafondComponent implements OnInit {
   }
 
   onSubmit(): void {
+    this.isLoading = true;
     this.plafondService.updatePlafond(this.plafondId, this.plafond).subscribe({
       next: () => {
         this.toastr.success('Plafond berhasil diperbarui');
         this.router.navigate(['/plafonds']);
       },
-      error: () => {
-        this.toastr.error('Gagal memperbarui plafond');
+      error: (error) => {
+        const errorMessage = error?.error?.message || 'Gagal memperbarui plafond';
+        this.toastr.error(errorMessage, 'Error');
+        this.isLoading = false;
       }
     });
   }

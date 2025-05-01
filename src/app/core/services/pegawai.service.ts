@@ -1,7 +1,6 @@
-// src/app/services/pegawai.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable, throwError, catchError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { RegisterPegawaiRequest } from '../models/register-pegawai-request.dto';
 import { PegawaiDetailsRequestDTO } from '../models/pegawai-detail-request.dto';
@@ -11,42 +10,36 @@ import { PegawaiProfile } from '../models/pegawai-profile.dto';
   providedIn: 'root',
 })
 export class PegawaiService {
-  private baseUrl = `${environment.apiBaseUrl}/pegawai`;
+  private baseUrl = `${environment.pegawaiBaseURL}`;
 
   constructor(private http: HttpClient) {}
 
+  private handleError(error: any): Observable<never> {
+    console.error('PegawaiService error:', error);
+    return throwError(() => new Error(error.message || 'Terjadi kesalahan pada permintaan.'));
+  }
+
   getAllPegawai(): Observable<any[]> {
-    const token = localStorage.getItem('access_token');
-    return this.http.get<any[]>(this.baseUrl, {
-      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
-    });
+    return this.http.get<any[]>(this.baseUrl).pipe(catchError(this.handleError));
   }
 
   getPegawaiById(id: string): Observable<any> {
-    const token = localStorage.getItem('access_token');
-    return this.http.get<any>(`${this.baseUrl}/${id}`, {
-      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
-    });
+    return this.http.get<any>(`${this.baseUrl}/${id}`).pipe(catchError(this.handleError));
   }
 
-  getMyProfile() {
-    const token = localStorage.getItem('access_token');
-    return this.http.get<PegawaiProfile>(`${this.baseUrl}/me`, {
-      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
-    });
+  getMyProfile(): Observable<PegawaiProfile> {
+    return this.http.get<PegawaiProfile>(`${this.baseUrl}/me`).pipe(catchError(this.handleError));
   }
 
-  registerPegawai(data: RegisterPegawaiRequest) {
-    const token = localStorage.getItem('access_token');
-    return this.http.post<any>(`${this.baseUrl}/register`, data, {
-      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
-     });
+  registerPegawai(data: RegisterPegawaiRequest): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/register`, data).pipe(catchError(this.handleError));
   }
 
   updatePegawaiDetails(id: string, data: PegawaiDetailsRequestDTO): Observable<any> {
-    const token = localStorage.getItem('access_token');
-    return this.http.put<any>(`${environment.apiBaseUrl}/pegawaiprofile/update/${id}`, data, {
-      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
-    });
+    return this.http.put<any>(`${environment.pegawaiProfileBaseURL}/update/${id}`, data).pipe(catchError(this.handleError));
+  }
+
+  changePassword(data: { oldPassword: string; newPassword: string; confirmNewPassword: string }): Observable<any> {
+    return this.http.put(`${environment.authBaseURL}/change-password`, data).pipe(catchError(this.handleError));
   }
 }

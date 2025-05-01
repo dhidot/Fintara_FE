@@ -1,0 +1,14 @@
+<li class="nav-item mb-2" [class.active]="isActive">
+  <a class="nav-link text-white d-flex justify-content-between align-items-center" type="button"
+    (click)="toggleDropdown()" [attr.aria-expanded]="isExpanded">
+    <span><i class="bi bi-people me-2"></i> {{ label }}</span>
+    <span class="dropdown-arrow bi" [ngClass]="isExpanded ? 'bi-caret-down-fill' : 'bi-caret-right-fill'"></span>
+  </a>
+  <ul class="dropdown-menu-custom" *ngIf="isExpanded">
+    <li *ngFor="let item of items">
+      <a class="dropdown-item-custom" [routerLink]="item.link" [ngClass]="{ 'active': isItemActive(item.link) }">
+        {{ item.label }}
+      </a>
+    </li>
+  </ul>
+</li>

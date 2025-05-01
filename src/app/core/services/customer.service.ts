@@ -1,21 +1,27 @@
-// src/app/services/pegawai.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable, catchError, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CustomerService {
-  private baseUrl = `${environment.apiBaseUrl}/customer`;
+  private baseUrl = `${environment.customerBaseURL}`;
 
   constructor(private http: HttpClient) {}
 
+  private handleError(error: any): Observable<never> {
+    console.error('BranchService error:', error);
+    return throwError(() => new Error(error.message || 'Terjadi kesalahan pada permintaan.'));
+  }
+
+
   getAllCustomers(): Observable<any[]> {
-    const token = localStorage.getItem('access_token');
-    return this.http.get<any[]>(`${this.baseUrl}/all`, {
-      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
-    });
+    return this.http.get<any[]>(`${this.baseUrl}/all`).pipe(catchError(this.handleError));
+  }
+
+  getCustomerById(id: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/${id}`).pipe(catchError(this.handleError));
   }
 }

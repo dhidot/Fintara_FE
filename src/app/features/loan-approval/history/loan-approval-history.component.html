@@ -1,0 +1,25 @@
+<div class="container mt-4">
+  <h4>History Approval</h4>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div></div> <!-- Kosong atau bisa isi tombol jika perlu -->
+
+    <div class="d-flex align-items-center">
+      <div class="input-group" style="max-width: 300px;">
+        <input type="text" class="form-control" placeholder="Cari pengajuan..." [(ngModel)]="searchTerm"
+          (input)="filterHistory()" />
+        <span class="input-group-text">
+          <i class="bi bi-search"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="text-center my-4">
+    <span class="spinner-border text-primary" role="status"></span>
+  </div>
+
+  <ngx-datatable *ngIf="!isLoading" class="bootstrap" [rows]="filteredRows" [columns]="columns" [columnMode]="'force'"
+    [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'">
+  </ngx-datatable>
+
+</div>

@@ -2,10 +2,10 @@
   <button *ngIf="showDetail" class="btn btn-info" (click)="detailClicked.emit()">
     <i class="bi bi-eye"></i>
   </button>
-  <button *ngIf="showEdit" class="btn btn-primary" (click)="editClicked.emit()">
+  <button *ngIf="showEdit" class="btn btn-warning" (click)="editClicked.emit()">
     <i class="bi bi-pencil"></i>
   </button>
-  <button *ngIf="showDelete" class="btn btn-danger" (click)="deleteClicked.emit()">
+  <button *ngIf="showDelete" class="btn btn-danger" (click)="delete()">
     <i class="bi bi-trash"></i>
   </button>
 </div>

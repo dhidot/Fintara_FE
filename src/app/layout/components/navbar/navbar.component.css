@@ -1,37 +1,32 @@
-/* Styling untuk div yang berisi nama dan ikon */
-.navbar .ms-auto .d-flex {
-  display: flex;
-  align-items: center;
-}
-
 /* Styling untuk tombol logout */
-.navbar .ms-auto button {
+.navbar .ms-auto button:not(.btn-toggle-sidebar) {
   border: 2px solid #fff;
   padding: 8px 16px;
   border-radius: 50px;
-  transition: background-color 0.3s, color 0.3s;
 }
 
-/* Efek hover untuk logout menjadi merah */
-.navbar .ms-auto button:hover {
-  background-color: #ff4d4d;
-  /* Merah */
+.navbar {
+  transition: all 300ms ease-in-out;
+  background-color: #212529;
+}
+
+/* Hover efek logout */
+.navbar .ms-auto button:not(.btn-toggle-sidebar):hover {
+  background-color: #f42626;
   color: white;
-  /* Warna teks putih */
 }
 
-/* Styling untuk teks nama */
-.navbar .ms-auto .text-white {
-  font-size: 16px;
-  font-weight: 600;
-}
-
-/* Ukuran icon di depan nama */
-.navbar .ms-auto .bi-person-circle {
+/* Styling untuk tombol toggle sidebar */
+.btn-toggle-sidebar {
+  border: none;
+  background: transparent;
   font-size: 1.5rem;
+  color: white;
+  padding: 8px;
+  cursor: pointer;
 }
 
-/* Padding dan margin untuk keselarasan */
-.navbar .ms-auto .me-3 {
-  margin-right: 20px;
+.btn-toggle-sidebar:focus {
+  outline: none;
+  box-shadow: none;
 }

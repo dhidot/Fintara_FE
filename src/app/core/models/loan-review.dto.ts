@@ -1,4 +1,4 @@
 export interface LoanReviewDTO {
-  isApproved: boolean;
+  status: string;
   notes: string;
 }

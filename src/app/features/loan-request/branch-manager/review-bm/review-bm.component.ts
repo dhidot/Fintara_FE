@@ -2,28 +2,29 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoanRequestService } from 'src/app/core/services/loan-request.service';
 import { LoanRequestApprovalDTO } from 'src/app/core/models/loan-request-approval.dto';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
 import { LoanReviewDTO } from 'src/app/core/models/loan-review.dto';
+import { ToastrService } from 'ngx-toastr';
+import { LoanRequestReviewComponent } from '../../../../shared/components/loan-request-review/loan-request-review.component';
 
 @Component({
-  selector: 'app-loan-request-bm-review',
-  templateUrl: './review-bm.component.html',
-  styleUrl: './review-bm.component.css',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  selector: 'app-loan-request-detail',
+  standalone: true,
+  imports: [LoanRequestReviewComponent],
+  template: `<app-loan-request-review
+  [loanRequest]="loanRequest"
+  [isLoading]="isLoading"
+  [isSubmitting]="isSubmitting"
+  [role]="'BM'"
+  (reviewSubmitted)="review($event)" />`
 })
 export class BmReviewComponent implements OnInit {
   loanRequest!: LoanRequestApprovalDTO;
   isLoading = true;
-  reviewForm!: FormGroup;
   isSubmitting = false;
 
   constructor(
     private route: ActivatedRoute,
     private loanRequestService: LoanRequestService,
-    private fb: FormBuilder,
     private router: Router,
     private toast: ToastrService
   ) {}
@@ -32,54 +33,31 @@ export class BmReviewComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) return;
 
-    this.reviewForm = this.fb.group({
-      notes: [''],
-    });
-
     this.loanRequestService.getById(id).subscribe({
       next: (data) => {
         this.loanRequest = data;
         this.isLoading = false;
       },
-      error: () => {
-        this.isLoading = false;
-        this.toast.error('Gagal mengambil data pengajuan', 'Error');
-      },
+      error: () => (this.isLoading = false),
     });
   }
 
-  review(isApproved: boolean) {
-    if (this.reviewForm.invalid) return;
-
+  review(event: { status: string; notes: string }) {
     this.isSubmitting = true;
 
     const payload: LoanReviewDTO = {
-      isApproved,
-      notes: this.reviewForm.value.notes,
+      status: event.status,
+      notes: event.notes,
     };
 
     this.loanRequestService.reviewLoanRequestByBm(this.loanRequest.id, payload).subscribe({
       next: (response) => {
-        this.toast.success(response.message || 'Review berhasil diproses', 'Sukses', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 3000,
-          progressBar: true,
-          progressAnimation: 'decreasing',
-          enableHtml: true,
-        });
-
-        this.router.navigate(['/loan-request/branch-manager/all']);
+        this.toast.success(response.message || 'Review berhasil diproses', 'Sukses');
+        this.router.navigate(['/loan-request/branch-manager/all']); // bisa disesuaikan ke route BM kalau ada
       },
       error: (err) => {
         const message = err?.error?.message || 'Terjadi kesalahan saat memproses review';
-        this.toast.error(message, 'Gagal', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 5000,
-          progressBar: true,
-          progressAnimation: 'decreasing',
-          enableHtml: true,
-        });
-        this.isSubmitting = false;
+        this.toast.error(message, 'Gagal');
       },
       complete: () => {
         this.isSubmitting = false;
@@ -87,3 +65,4 @@ export class BmReviewComponent implements OnInit {
     });
   }
 }
+

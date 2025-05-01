@@ -1,21 +1,20 @@
-// dashboard.service.ts
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError, catchError } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class DashboardService {
-  private baseUrl = `${environment.apiBaseUrl}/dashboard`;
+  private baseUrl = `${environment.dashboardBaseURL}`;
 
   constructor(private http: HttpClient) {}
 
+  private handleError(error: any): Observable<never> {
+    console.error('DashboardService error:', error);
+    return throwError(() => new Error(error.message || 'Terjadi kesalahan pada permintaan.'));
+  }
+
   getSummary(): Observable<any> {
-    const token = localStorage.getItem('access_token');
-    return this.http.get<any>(`${this.baseUrl}/data`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    return this.http.get<any>(`${this.baseUrl}/data`).pipe(catchError(this.handleError));
   }
 }

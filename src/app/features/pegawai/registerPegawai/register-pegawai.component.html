@@ -1,29 +1,43 @@
-<div class="container mt-5 mb-5">
-  <h2 class="mb-4 fw-bold">Registrasi Pegawai</h2>
+<div class="container mt-5">
+  <h4 class="fw-bold mb-4 text-center">Registrasi Pegawai</h4>
 
   <form (ngSubmit)="onSubmit()">
     <!-- Name -->
-    <div class="form-group">
-      <label for="name">Nama</label>
-      <input type="text" class="form-control" id="name" [(ngModel)]="pegawai.name" name="name" required />
+    <div class="mb-3">
+      <label for="name" class="form-label">Nama</label>
+      <input type="text" id="name" class="form-control" [(ngModel)]="pegawai.name" name="name"
+        placeholder="Masukkan nama pegawai" required />
     </div>
 
     <!-- Email -->
-    <div class="form-group">
-      <label for="email">Email</label>
-      <input type="email" class="form-control" id="email" [(ngModel)]="pegawai.email" name="email" required />
+    <div class="mb-3">
+      <label for="email" class="form-label">Email</label>
+      <input type="email" id="email" class="form-control" [(ngModel)]="pegawai.email" name="email"
+        placeholder="Masukkan email pegawai" required />
     </div>
 
     <!-- NIP -->
-    <div class="form-group">
-      <label for="nip">NIP</label>
-      <input type="text" class="form-control" id="nip" [(ngModel)]="pegawai.nip" name="nip" required />
+    <div class="mb-3">
+      <label for="nip" class="form-label">NIP</label>
+      <input type="text" id="nip" class="form-control" [(ngModel)]="pegawai.nip" name="nip"
+        placeholder="Masukkan NIP pegawai" required />
+    </div>
+
+    <!-- Gender Dropdown -->
+    <div class="mb-3">
+      <label for="gender" class="form-label">Jenis Kelamin</label>
+      <select id="gender" class="form-control" [(ngModel)]="pegawai.jenisKelamin" name="jenis_kelamin" required>
+        <option value="">Pilih Jenis Kelamin</option>
+        <option *ngFor="let gender of genderList" [value]="gender.value">
+          {{ gender.label }}
+        </option>
+      </select>
     </div>
 
     <!-- Role Dropdown -->
-    <div class="form-group">
-      <label for="role">Role</label>
-      <select [(ngModel)]="pegawai.role" class="form-control" id="roleName" name="roleName" required>
+    <div class="mb-3">
+      <label for="roleName" class="form-label">Role</label>
+      <select id="roleName" class="form-control" [(ngModel)]="pegawai.role" name="roleName" required>
         <option value="">Pilih Role</option>
         <option *ngFor="let role of roleList" [value]="role.name">
           {{ roleNameMap[role.name] || role.name }}
@@ -32,28 +46,28 @@
     </div>
 
     <!-- Branch Dropdown -->
-    <div class="form-group">
-      <label for="branchName">Cabang</label>
-      <select class="form-control" id="branchName" [(ngModel)]="pegawai.branchName" name="branchName" required>
+    <div class="mb-3">
+      <label for="branchName" class="form-label">Cabang</label>
+      <select id="branchName" class="form-control" [(ngModel)]="pegawai.branchName" name="branchName" required>
         <option value="">Pilih Cabang</option>
         <option *ngFor="let branch of branchList" [value]="branch.name">{{ branch.name }}</option>
       </select>
     </div>
 
     <!-- Status Dropdown -->
-    <div class="form-group">
-      <label for="statusPegawai">Status Pegawai</label>
-      <select class="form-control" id="statusPegawai" [(ngModel)]="pegawai.statusPegawai" name="statusPegawai" required>
+    <div class="mb-4">
+      <label for="statusPegawai" class="form-label">Status Pegawai</label>
+      <select id="statusPegawai" class="form-control" [(ngModel)]="pegawai.statusPegawai" name="statusPegawai" required>
+        <option value="">Pilih Status</option>
         <option *ngFor="let status of statusList" [value]="status.value">{{ status.label }}</option>
       </select>
     </div>
 
-    <button class="btn btn-primary" [disabled]="isLoading" (click)="onSubmit()">
-      <span *ngIf="!isLoading">Simpan</span>
-      <span *ngIf="isLoading">
-        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-        Menyimpan...
-      </span>
-    </button>
+    <div class="d-grid">
+      <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+        <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
+        Simpan
+      </button>
+    </div>
   </form>
 </div>

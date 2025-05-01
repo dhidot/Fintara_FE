@@ -1,8 +1,57 @@
 .card {
-  min-height: 150px;
-  transition: transform 0.2s ease;
+  border: none;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
 }
 
 .card:hover {
   transform: translateY(-5px);
+}
+
+.card-body {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+}
+
+.card-icon {
+  font-size: 2.5rem;
+  opacity: 0.8;
+}
+
+.card-text h5 {
+  margin: 0;
+  font-size: 1rem;
+  opacity: 0.85;
+}
+
+.card-text h3 {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: bold;
+}
+
+/* Custom background colors */
+.card-role {
+  background: linear-gradient(135deg, #0d6efd, #3a8ef0);
+}
+
+.card-pegawai {
+  background: linear-gradient(135deg, #198754, #28a745);
+}
+
+.card-customer {
+  background: linear-gradient(135deg, #0dcaf0, #31d2f2);
+  color: #000;
+}
+
+.card-cabang {
+  background: linear-gradient(135deg, #ffc107, #ffcd39);
+  color: #000;
+}
+
+.card-plafond {
+  background: linear-gradient(135deg, #dc3545, #f26674);
 }

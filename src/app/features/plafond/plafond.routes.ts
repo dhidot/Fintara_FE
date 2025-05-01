@@ -3,9 +3,10 @@ import { ListPlafondComponent } from '../../features/plafond/getAllPlafond/plafo
 import { AddPlafondComponent } from '../../features/plafond/addPlafond/add-plafond.component';
 import { EditPlafondComponent } from '../../features/plafond/editPlafond/edit-plafond.component';
 import { featureGuard } from '../../core/guards/feature.guard';
+import { FirstLoginGuard } from 'src/app/core/guards/first-login.guard';
 
 export const plafondRoutes: Routes = [
-  { path: 'plafonds', component: ListPlafondComponent, canActivate: [featureGuard('FEATURE_PLAFOND_ACCESS')] },
-  { path: 'plafond/add', component: AddPlafondComponent, canActivate: [featureGuard('FEATURE_PLAFOND_ACCESS')] },
-  { path: 'plafond/edit/:id', component: EditPlafondComponent, canActivate: [featureGuard('FEATURE_PLAFOND_ACCESS')] }
+  { path: 'plafonds', component: ListPlafondComponent, canActivate: [FirstLoginGuard, featureGuard('FEATURE_GET_ALL_PLAFOND')] },
+  { path: 'plafonds/add', component: AddPlafondComponent, canActivate: [FirstLoginGuard, featureGuard('FEATURE_ADD_PLAFOND')] },
+  { path: 'plafonds/edit/:id', component: EditPlafondComponent, canActivate: [FirstLoginGuard, featureGuard('FEATURE_UPDATE_PLAFOND')] }
 ];

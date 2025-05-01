@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable, catchError, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Feature } from '../../core/models/feature-request.dto';
 
@@ -8,60 +8,48 @@ import { Feature } from '../../core/models/feature-request.dto';
   providedIn: 'root',
 })
 export class RoleService {
-  private baseUrl = `${environment.apiBaseUrl}/roles`;
-  private featureRoleUrl = `${environment.apiBaseUrl}/role-features`;
+  private baseUrl = `${environment.rolesBaseURL}`;
+  private featureRoleUrl = `${environment.roleFeatureBaseURL}`;
 
   constructor(private http: HttpClient) {}
 
+  private handleError(error: any): Observable<never> {
+    console.error('RoleService error:', error);
+    return throwError(() => new Error(error.message || 'Terjadi kesalahan pada permintaan.'));
+  }
+
   getAllRoles(): Observable<any[]> {
-    const token = localStorage.getItem('access_token');
-    return this.http.get<any[]>(`${this.baseUrl}/all`, {
-      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
-    });
+    return this.http.get<any[]>(`${this.baseUrl}/all`).pipe(catchError(this.handleError));
   }
 
   getRolesWithFeatureCount(): Observable<any[]> {
-    const token = localStorage.getItem('access_token');
-    return this.http.get<any[]>(`${this.baseUrl}/with-feature-count`, {
-      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
-    });
+    return this.http.get<any[]>(`${this.baseUrl}/with-feature-count`).pipe(catchError(this.handleError));
   }
 
   getRoleById(roleId: string): Observable<any> {
-    const token = localStorage.getItem('access_token');
-    return this.http.get<any>(`${this.baseUrl}/get/${roleId}`, {
-      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
-    });
+    return this.http.get<any>(`${this.baseUrl}/${roleId}`).pipe(catchError(this.handleError));
   }
 
   createRole(role: any): Observable<any> {
-    const token = localStorage.getItem('access_token');
-    return this.http.post(`${this.baseUrl}/add`, role, {
-      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
-    });
-  }
-
-  addRoleWithFeatures(roleId: string, featureIds: string[]): Observable<any> {
-    const token = localStorage.getItem('access_token');
-    return this.http.post(`${this.featureRoleUrl}/assign-multiple-features`, {
-      roleId: roleId,           // Mengirim roleId dalam body
-      featureIds: featureIds    // Mengirim featureIds dalam body
-    }, {
-      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
-    });
+    return this.http.post<any>(`${this.baseUrl}/add`, role).pipe(catchError(this.handleError));
   }
 
   updateRole(roleId: string, data: any): Observable<any> {
-    const token = localStorage.getItem('access_token');  // Ambil token dari localStorage
-    return this.http.put<any>(`${this.baseUrl}/edit/${roleId}`, data, {
-      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
-    });
+    return this.http.put<any>(`${this.baseUrl}/edit/${roleId}`, data).pipe(catchError(this.handleError));
+  }
+
+  addRoleWithFeatures(roleId: string, featureIds: string[]): Observable<any> {
+    return this.http.post<any>(`${this.featureRoleUrl}/assign-multiple-features`, {
+      roleId,
+      featureIds,
+    }).pipe(catchError(this.handleError));
   }
 
   getFeaturesByRole(roleId: string): Observable<Feature[]> {
-    const token = localStorage.getItem('access_token');
-    return this.http.get<Feature[]>(`${this.featureRoleUrl}/${roleId}/features`, {
-      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
-    });
+    return this.http.get<Feature[]>(`${this.featureRoleUrl}/${roleId}/features`).pipe(catchError(this.handleError));
+  }
+
+  deleteRole(roleId: string): Observable<any> {
+    return this.http.delete<any>(`${this.baseUrl}/${roleId}`).pipe(catchError(this.handleError));
   }
 }

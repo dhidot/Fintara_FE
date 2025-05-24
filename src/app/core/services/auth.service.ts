@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, throwError } from 'rxjs';
+import { Observable, catchError, map, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { jwtDecode } from 'jwt-decode'; // pastikan kamu sudah menginstall jwt-decode
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -38,27 +38,48 @@ export class AuthService {
   }
 
   login(data: { nip: string; password: string }): Observable<any> {
-    return this.http.post(`${this.baseUrl}/login-pegawai`, data).pipe(catchError(this.handleError));
+    return this.http.post<any>(`${this.baseUrl}/login-pegawai`, data).pipe(
+      map(response => response.data),
+      catchError(this.handleError)
+    );
   }
 
   logout(): Observable<any> {
-    return this.http.post(`${this.baseUrl}/logout`, null).pipe(catchError(this.handleError));
+    return this.http.post<any>(`${this.baseUrl}/logout`, null).pipe(
+      map(response => response.data),
+      catchError(this.handleError)
+    );
   }
 
   sendResetPasswordEmail(email: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/forgot-password`, { email }).pipe(catchError(this.handleError));
+    return this.http.post<any>(`${this.baseUrl}/forgot-password`, { email }).pipe(
+      map(response => response.data),
+      catchError(this.handleError)
+    );
   }
 
   resetPassword(token: string, newPassword: string, confirmPassword: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/reset-password`, { token, newPassword, confirmPassword }).pipe(catchError(this.handleError));
+    return this.http.post<any>(`${this.baseUrl}/reset-password`, {
+      token,
+      newPassword,
+      confirmPassword
+    }).pipe(
+      map(response => response.data),
+      catchError(this.handleError)
+    );
   }
 
   verifyEmail(token: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/verify-email?token=${token}`)
-      .pipe(catchError(this.handleError));
+    return this.http.get<any>(`${this.baseUrl}/verify-email?token=${token}`).pipe(
+      map(response => response.data),
+      catchError(this.handleError)
+    );
   }
 
   getAllPegawai(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.pegawaiBaseUrl}`).pipe(catchError(this.handleError));
+    return this.http.get<any>(`${this.pegawaiBaseUrl}`).pipe(
+      map(response => response.data),
+      catchError(this.handleError)
+    );
   }
 }

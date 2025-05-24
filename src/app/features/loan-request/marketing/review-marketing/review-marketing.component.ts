@@ -48,6 +48,9 @@ export class MarketingReviewComponent implements OnInit {
     const payload: LoanReviewDTO = {
       status: event.status,
       notes: event.notes,
+      notesIdentitas: '',
+      notesPlafond: '',
+      notesSummary: ''
     };
 
     this.loanRequestService.reviewLoanRequest(this.loanRequest.id, payload).subscribe({

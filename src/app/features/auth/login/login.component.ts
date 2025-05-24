@@ -31,61 +31,71 @@ export class LoginComponent {
     });
   }
 
-  onSubmit() {
-    if (this.form.invalid) return;
+ onSubmit() {
+  if (this.form.invalid) return;
 
-    this.isLoading = true;
-    this.errorMessage = null; // reset pesan error
+  this.isLoading = true;
+  this.errorMessage = null; // reset pesan error
 
-    const credentials = this.form.value;
+  const credentials = this.form.value;
 
-    this.authService.login(credentials).subscribe({
-      next: (response) => {
-        localStorage.setItem('access_token', response.data.jwt.token);
-        localStorage.setItem('features', JSON.stringify(response.data.jwt.features));
-        localStorage.setItem('role', response.data.jwt.role);
-        localStorage.setItem(
-          'user',
-          JSON.stringify({
-            name: response.data.jwt.name,
-            email: response.data.jwt.username,
-            role: response.data.jwt.role
-          })
-        );
-        localStorage.setItem('first_login', response.data.firstLogin); // Menyimpan status firstLogin ke localStorage
+  this.authService.login(credentials).subscribe({
+    next: (response) => {
+      console.log('LOGIN RESPONSE: ', response); // log untuk debug
 
-        const isFirstLogin = response.data.firstLogin; // Menangkap status firstLogin
-        if (isFirstLogin) {
-          // Redirect ke halaman ubah password jika firstLogin = true
-          console.log('Redirect ke ubah-password karena firstLogin = true');
-          this.router.navigate(['pegawai/change-password']);
-        } else {
-          // Jika bukan first login, arahkan ke dashboard
-          console.log('Redirect ke dashboard karena firstLogin = false');
-          this.router.navigate(['/dashboard']);
-        }
+      const jwt = response.jwt;
+      const firstLogin = response.firstLogin;
 
-        this.toastr.success('Login berhasil!', 'Selamat Datang', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 3000,
-          progressBar: true,
-          progressAnimation: 'decreasing',
-          enableHtml: true
-        });
-      },
-      error: (err) => {
-        const message = err?.error?.message || 'Terjadi kesalahan saat login';
-
-        this.toastr.error(message, 'Login Gagal', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 5000,
-          progressBar: true,
-          progressAnimation: 'decreasing',
-          enableHtml: true,
-        });
-
+      if (!jwt || !jwt.token) {
+        this.toastr.error('Data login tidak valid.', 'Login Gagal');
         this.isLoading = false;
+        return;
       }
-    });
-  }
+
+      localStorage.setItem('access_token', jwt.token);
+      localStorage.setItem('features', JSON.stringify(jwt.features));
+      localStorage.setItem('role', jwt.role);
+      localStorage.setItem(
+        'user',
+        JSON.stringify({
+          name: jwt.name,
+          email: jwt.username,
+          role: jwt.role
+        })
+      );
+      localStorage.setItem('first_login', String(firstLogin));
+
+      if (firstLogin) {
+        console.log('Redirect ke ubah-password karena firstLogin = true');
+        this.router.navigate(['pegawai/change-password']);
+      } else {
+        console.log('Redirect ke dashboard karena firstLogin = false');
+        this.router.navigate(['/dashboard']);
+      }
+
+      this.toastr.success('Login berhasil!', 'Selamat Datang', {
+        positionClass: 'toast-bottom-right',
+        timeOut: 3000,
+        progressBar: true,
+        progressAnimation: 'decreasing',
+        enableHtml: true
+      });
+
+      this.isLoading = false;
+    },
+    error: (err) => {
+      const message = err?.error?.message || 'Terjadi kesalahan saat login';
+
+      this.toastr.error(message, 'Login Gagal', {
+        positionClass: 'toast-bottom-right',
+        timeOut: 5000,
+        progressBar: true,
+        progressAnimation: 'decreasing',
+        enableHtml: true,
+      });
+
+      this.isLoading = false;
+    }
+  });
+}
 }

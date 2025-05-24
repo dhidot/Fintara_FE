@@ -5,7 +5,9 @@
 <div class="main-content flex-grow-1" [@slideContent]="sidebarState">
   <app-navbar (toggle)="toggleSidebar(); onSidebarToggled()"></app-navbar>
 
+
   <div class="container-fluid p-3">
+    <app-breadcrumb-clock-card></app-breadcrumb-clock-card>
     <div class="custom-dashboard-card">
       <router-outlet></router-outlet>
     </div>

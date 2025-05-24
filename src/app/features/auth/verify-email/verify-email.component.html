@@ -1,8 +1,18 @@
-<div class="d-flex justify-content-center align-items-center vh-100 flex-column text-center px-3" *ngIf="status">
+<!-- Loading spinner -->
+<div *ngIf="isLoading" class="d-flex justify-content-center align-items-center vh-100">
+  <div class="spinner-border text-primary mb-4" role="status" style="width: 4rem; height: 4rem;">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+  <p class="fs-4 text-muted">Email Anda sedang diverifikasi...</p>
+</div>
+
+<!-- Success / Error UI -->
+<div class="d-flex justify-content-center align-items-center vh-100 flex-column text-center px-3"
+  *ngIf="!isLoading && status">
   <svg width="200" height="200" viewBox="0 0 24 24" fill="none" class="mb-4 animate__animated" [ngClass]="{
-         'animate__bounceIn': status === 'success',
-         'animate__shakeX': status === 'error'
-       }">
+      'animate__bounceIn': status === 'success',
+      'animate__shakeX': status === 'error'
+    }">
     <ng-container *ngIf="status === 'success'; else errorIcon">
       <circle cx="12" cy="12" r="10" stroke="#28a745" stroke-width="2" fill="none" />
       <path d="M8 12l2 2l4 -4" stroke="#28a745" stroke-width="2" fill="none" stroke-linecap="round"

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, throwError, catchError } from 'rxjs';
+import { Observable, throwError, catchError, map } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { LoanApprovalHistory } from '../../core/models/loan-approval-hitsory.dto';
 
@@ -18,6 +18,9 @@ export class LoanApprovalService {
   }
 
   getLoanApprovalHistory(): Observable<LoanApprovalHistory[]> {
-    return this.http.get<LoanApprovalHistory[]>(`${this.apiUrl}/approval-history`).pipe(catchError(this.handleError));
+    return this.http.get<any>(`${this.apiUrl}/approval-history`).pipe(
+      map(response => response.data), // ✅ ambil hanya bagian `data`
+      catchError(this.handleError)
+    );
   }
 }

@@ -9,9 +9,12 @@ import { provideToastr } from 'ngx-toastr';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { provideAnimations, BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppHttpInterceptor } from './app/core/interceptors/interceptor.service'; // pastikan ini benar
+// ngModal
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 bootstrapApplication(AppComponent, {
   providers: [
+    NgbModal,
     provideRouter(routes),
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     provideAnimations(),

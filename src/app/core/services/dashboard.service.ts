@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, throwError, catchError } from 'rxjs';
+import { Observable, throwError, catchError, map } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
@@ -15,6 +15,10 @@ export class DashboardService {
   }
 
   getSummary(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/data`).pipe(catchError(this.handleError));
+    return this.http.get<any>(`${this.baseUrl}/data`).pipe(
+      map(response => response.data),
+      catchError(this.handleError)
+    );
   }
+
 }

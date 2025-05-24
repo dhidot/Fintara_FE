@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SidebarComponent } from '../components/sidebar/sidebar.component';
 import { NavbarComponent } from '../components/navbar/navbar.component';
+import { BreadcrumbClockCardComponent } from '../components/breadcrumb-clock-card/breadcrumb-clock-card.component';
 import {
   trigger,
   state,
@@ -14,7 +15,7 @@ import {
 @Component({
   selector: 'app-shell',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, SidebarComponent, NavbarComponent],
+  imports: [CommonModule, RouterOutlet, SidebarComponent, NavbarComponent, BreadcrumbClockCardComponent],
   templateUrl: './shell.component.html',
   styleUrls: ['./shell.component.css'],
   animations: [

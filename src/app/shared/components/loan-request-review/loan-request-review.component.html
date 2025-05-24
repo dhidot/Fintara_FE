@@ -1,8 +1,19 @@
 <div class="container mt-4" *ngIf="!isLoading">
   <h4 class="mb-3">Review Pengajuan</h4>
 
-  <div class="row">
-    <!-- Customer Info -->
+  <!-- Stepper -->
+  <div class="stepper d-flex justify-content-between align-items-center mb-4">
+    <ng-container *ngFor="let s of ['IDENTITAS', 'PLAFOND', 'SUMMARY']; let i = index">
+      <div class="step" [class.active]="stepOrder.indexOf(step) >= i">
+        <div class="circle">{{ i + 1 }}</div>
+        <div class="label">{{ s }}</div>
+      </div>
+      <div class="line" *ngIf="i < 2"></div>
+    </ng-container>
+  </div>
+
+  <!-- Step Content -->
+  <div class="row" *ngIf="step === 'IDENTITAS'">
     <div class="col-md-6">
       <div class="card mb-3">
         <div class="card-header bg-primary text-white">Data Customer</div>
@@ -10,13 +21,44 @@
           <p><strong>Nama:</strong> {{ loanRequest.customerName }}</p>
           <p><strong>Email:</strong> {{ loanRequest.customerEmail }}</p>
           <p><strong>Telepon:</strong> {{ loanRequest.customerPhone }}</p>
-          <p><strong>Pekerjaan:</strong> {{ loanRequest.customerJob }}</p>
-          <p><strong>Gaji Bulanan:</strong> {{ loanRequest.customerSalary | currency:'IDR' }}</p>
+          <p><strong>Alamat:</strong> {{ loanRequest.customerAddress }}</p>
         </div>
       </div>
     </div>
 
-    <!-- Loan Request Info -->
+    <div class="col-md-6">
+      <!-- Foto KTP -->
+      <div class="card mb-3">
+        <div class="card-header bg-secondary text-white">Foto KTP</div>
+        <div class="card-body">
+          <ng-container *ngIf="loanRequest.customerKtpPhotoUrl; else noKtp">
+            <img [src]="loanRequest.customerKtpPhotoUrl" alt="KTP Customer" class="img-fluid"
+              style="max-height: 300px; cursor: pointer;" (click)="openModal(loanRequest.customerKtpPhotoUrl)">
+          </ng-container>
+          <ng-template #noKtp>
+            <p class="text-muted">Tidak ada foto KTP untuk ditampilkan.</p>
+          </ng-template>
+        </div>
+      </div>
+
+      <!-- Selfie dengan KTP -->
+      <div class="card mb-3">
+        <div class="card-header bg-dark text-white">Selfie dengan KTP</div>
+        <div class="card-body">
+          <ng-container *ngIf="loanRequest.customerSelfieKtpPhotoUrl; else noSelfie">
+            <img [src]="loanRequest.customerSelfieKtpPhotoUrl" alt="Selfie dengan KTP" class="img-fluid"
+              style="max-height: 300px; cursor: pointer;" (click)="openModal(loanRequest.customerSelfieKtpPhotoUrl)">
+          </ng-container>
+          <ng-template #noSelfie>
+            <p class="text-muted">Tidak ada selfie dengan KTP untuk ditampilkan.</p>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row" *ngIf="step === 'PLAFOND'">
     <div class="col-md-6">
       <div class="card mb-3">
         <div class="card-header bg-success text-white">Detail Pengajuan</div>
@@ -24,54 +66,139 @@
           <p><strong>Jumlah:</strong> {{ loanRequest.amount | currency:'IDR' }}</p>
           <p><strong>Tenor:</strong> {{ loanRequest.tenor }} bulan</p>
           <p><strong>Status:</strong> {{ loanRequest.status }}</p>
+          <p><strong>Pekerjaan:</strong> {{ loanRequest.customerJob }}</p>
+          <p><strong>Gaji Bulanan:</strong> {{ loanRequest.customerSalary | currency:'IDR' }}</p>
           <p><strong>Tanggal Pengajuan:</strong> {{ loanRequest.requestDate | date }}</p>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- Modal Template -->
+  <ng-template #ktpModal let-modal>
+    <div class="modal-header bg-primary text-white">
+      <h5 class="modal-title"><i class="bi bi-person-badge"></i> Foto KTP Customer</h5>
+      <button type="button" class="btn-close btn-close-white" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body text-center">
+      <img *ngIf="ktpPhotoUrl; else noImage" [src]="ktpPhotoUrl" alt="Foto KTP" class="img-fluid rounded shadow-sm">
+      <ng-template #noImage>
+        <p class="text-muted">Tidak ada foto KTP untuk ditampilkan.</p>
+      </ng-template>
+    </div>
+    <div class="modal-footer justify-content-between">
+      <span class="text-muted small">Pastikan foto KTP jelas dan valid.</span>
+      <button class="btn btn-secondary" (click)="modal.close()">Tutup</button>
+    </div>
+  </ng-template>
+
   <form [formGroup]="reviewForm">
-    <div class="mb-3">
-      <label for="notes" class="form-label">Catatan</label>
-      <textarea id="notes" class="form-control" formControlName="notes"></textarea>
+    <ng-container [ngSwitch]="step">
+      <!-- IDENTITAS -->
+      <div *ngSwitchCase="'IDENTITAS'">
+        <h5>Review Identitas</h5>
+        <textarea class="form-control mb-3" formControlName="notesIdentitas" placeholder="Catatan Identitas"></textarea>
+      </div>
+
+      <!-- PLAFOND -->
+      <div *ngSwitchCase="'PLAFOND'">
+        <h5>Review Plafond</h5>
+        <textarea class="form-control mb-3" formControlName="notesPlafond" placeholder="Catatan Plafond"></textarea>
+      </div>
+
+      <!-- SUMMARY -->
+      <div *ngSwitchCase="'SUMMARY'">
+        <h5 class="mb-3">Ringkasan Pengajuan</h5>
+        <div class="row">
+          <div class="col-md-6">
+            <h6 class="text-primary">Data Customer</h6>
+            <ul class="list-group list-group-flush mb-3">
+              <li class="list-group-item"><strong>Nama:</strong> {{ loanRequest.customerName }}</li>
+              <li class="list-group-item"><strong>Email:</strong> {{ loanRequest.customerEmail }}</li>
+              <li class="list-group-item"><strong>Telepon:</strong> {{ loanRequest.customerPhone }}</li>
+              <li class="list-group-item"><strong>Alamat:</strong> {{ loanRequest.customerAddress }}</li>
+              <li class="list-group-item"><strong>Pekerjaan:</strong> {{ loanRequest.customerJob }}</li>
+              <li class="list-group-item"><strong>Gaji:</strong> {{ loanRequest.customerSalary | currency:'IDR' }}</li>
+            </ul>
+          </div>
+          <div class="col-md-6">
+            <h6 class="text-success">Detail Pengajuan</h6>
+            <ul class="list-group list-group-flush mb-3">
+              <li class="list-group-item"><strong>Jumlah:</strong> {{ loanRequest.amount | currency:'IDR' }}</li>
+              <li class="list-group-item"><strong>Tenor:</strong> {{ loanRequest.tenor }} bulan</li>
+              <li class="list-group-item"><strong>Status:</strong> {{ loanRequest.status }}</li>
+              <li class="list-group-item"><strong>Tanggal Pengajuan:</strong> {{ loanRequest.requestDate | date }}</li>
+            </ul>
+          </div>
+        </div>
+
+        <div *ngIf="loanRequest.customerKtpPhotoUrl" class="mb-3">
+          <h6>Foto KTP</h6>
+          <img [src]="loanRequest.customerKtpPhotoUrl" class="img-thumbnail shadow" style="max-height: 250px;">
+        </div>
+
+        <div *ngIf="loanRequest.customerSelfieKtpPhotoUrl" class="mb-3">
+          <h6>Selfie dengan KTP</h6>
+          <img [src]="loanRequest.customerSelfieKtpPhotoUrl" class="img-thumbnail shadow" style="max-height: 250px;">
+        </div>
+
+        <textarea class="form-control mb-3" formControlName="notesSummary" placeholder="Catatan Summary"></textarea>
+        <textarea class="form-control mb-3" formControlName="notes" placeholder="Catatan Umum"></textarea>
+
+        <!-- Action Buttons -->
+        <div class="d-flex gap-2 flex-wrap">
+          <ng-container [ngSwitch]="role">
+            <ng-container *ngSwitchCase="'MARKETING'">
+              <app-review-action-button label="Rekomendasikan" status="DIREKOMENDASIKAN_MARKETING"
+                styleClass="btn-success" [loading]="isSubmitting" [disabled]="isSubmitting"
+                [confirmText]="'Apakah Anda yakin akan merekomendasikan pengajuan ini?'"
+                (actionClick)="submitReview($event)">
+              </app-review-action-button>
+
+              <app-review-action-button label="Tolak" status="DITOLAK_MARKETING" styleClass="btn-danger"
+                [loading]="isSubmitting" [disabled]="isSubmitting"
+                [confirmText]="'Apakah Anda yakin ingin menolak pengajuan ini?'" (actionClick)="submitReview($event)">
+              </app-review-action-button>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'BM'">
+              <app-review-action-button label="Setujui" status="DISETUJUI_BM" styleClass="btn-success"
+                [loading]="isSubmitting" [disabled]="isSubmitting"
+                [confirmText]="'Apakah Anda yakin akan menyetujui pengajuan ini?'" (actionClick)="submitReview($event)">
+              </app-review-action-button>
+
+              <app-review-action-button label="Tolak" status="DITOLAK_BM" styleClass="btn-danger"
+                [loading]="isSubmitting" [disabled]="isSubmitting"
+                [confirmText]="'Apakah Anda yakin ingin menolak pengajuan ini?'" (actionClick)="submitReview($event)">
+              </app-review-action-button>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'BACKOFFICE'">
+              <app-review-action-button label="Disburse" status="DISBURSED" styleClass="btn-primary"
+                [loading]="isSubmitting" [disabled]="isSubmitting"
+                [confirmText]="'Apakah Anda yakin akan melakukan pencairan terhadap pengajuan ini?'"
+                (actionClick)="submitReview($event)">
+              </app-review-action-button>
+
+              <app-review-action-button label="Tolak" status="DITOLAK_BO" styleClass="btn-danger"
+                [loading]="isSubmitting" [disabled]="isSubmitting"
+                [confirmText]="'Apakah Anda yakin ingin membatalkan pencairan pengajuan ini?'"
+                (actionClick)="submitReview($event)">
+              </app-review-action-button>
+            </ng-container>
+          </ng-container>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- Step Navigation -->
+    <div class="d-flex justify-content-between mt-4">
+      <button type="button" class="btn btn-secondary" (click)="goToPreviousStep()" [disabled]="step === 'IDENTITAS'">
+        Sebelumnya
+      </button>
+      <button *ngIf="step !== 'SUMMARY'" type="button" class="btn btn-primary" (click)="goToNextStep()">
+        Selanjutnya
+      </button>
     </div>
-
-    <div class="d-flex gap-2">
-      <!-- MARKETING -->
-      <ng-container *ngIf="role === 'MARKETING'">
-        <button type="button" class="btn btn-success" (click)="submitReview('DIREKOMENDASIKAN_MARKETING')"
-          [disabled]="isSubmitting">
-          <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-1"></span>
-          Rekomendasikan
-        </button>
-        <button type="button" class="btn btn-danger" (click)="submitReview('DITOLAK_MARKETING')"
-          [disabled]="isSubmitting">
-          <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-1"></span>
-          Tolak
-        </button>
-      </ng-container>
-
-      <!-- BRANCH MANAGER -->
-      <ng-container *ngIf="role === 'BM'">
-        <button type="button" class="btn btn-success" (click)="submitReview('DISETUJUI_BM')" [disabled]="isSubmitting">
-          <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-1"></span>
-          Setujui
-        </button>
-        <button type="button" class="btn btn-danger" (click)="submitReview('DITOLAK_BM')" [disabled]="isSubmitting">
-          <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-1"></span>
-          Tolak
-        </button>
-      </ng-container>
-
-      <!-- BACK OFFICE -->
-      <ng-container *ngIf="role === 'BACKOFFICE'">
-        <button type="button" class="btn btn-primary" (click)="submitReview('DISBURSED')" [disabled]="isSubmitting">
-          <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-1"></span>
-          Disburse
-        </button>
-      </ng-container>
-    </div>
-
   </form>
-
 </div>

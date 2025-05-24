@@ -48,6 +48,9 @@ export class BmReviewComponent implements OnInit {
     const payload: LoanReviewDTO = {
       status: event.status,
       notes: event.notes,
+      notesIdentitas: '',
+      notesPlafond: '',
+      notesSummary: ''
     };
 
     this.loanRequestService.reviewLoanRequestByBm(this.loanRequest.id, payload).subscribe({

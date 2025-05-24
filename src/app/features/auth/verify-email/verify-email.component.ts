@@ -12,6 +12,7 @@ export class VerifyEmailComponent implements OnInit {
   status: 'success' | 'error' | null = null;
   message: string = '';
   countdown: number = 5;
+  isLoading = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -24,13 +25,16 @@ export class VerifyEmailComponent implements OnInit {
     const token = this.route.snapshot.queryParamMap.get('token');
 
     if (token) {
+      this.isLoading = true;
       this.authService.verifyEmail(token).subscribe({
         next: () => {
+          this.isLoading = false;
           this.status = 'success';
           this.message = 'Email kamu berhasil diverifikasi!';
           this.startCountdown();
         },
         error: () => {
+          this.isLoading = false;
           this.status = 'error';
           this.message = 'Token verifikasi tidak valid atau sudah kedaluwarsa.';
         }

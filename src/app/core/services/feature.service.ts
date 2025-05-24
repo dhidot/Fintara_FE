@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, throwError, catchError } from 'rxjs';
+import { Observable, throwError, catchError, map } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Feature } from '../models/feature-request.dto';
 
@@ -18,10 +18,16 @@ export class FeatureService {
   }
 
   getAllFeatures(): Observable<Feature[]> {
-    return this.http.get<Feature[]>(`${this.baseUrl}/all`).pipe(catchError(this.handleError));
+    return this.http.get<any>(`${this.baseUrl}/all`).pipe(
+      map(response => response.data), // ✅ ambil array Feature[]
+      catchError(this.handleError)
+    );
   }
 
   getAllGroupedFeatures(): Observable<Record<string, Feature[]>> {
-    return this.http.get<Record<string, Feature[]>>(`${this.baseUrl}/grouped`).pipe(catchError(this.handleError));
+    return this.http.get<any>(`${this.baseUrl}/grouped`).pipe(
+      map(response => response.data), // ✅ ambil object hasil group
+      catchError(this.handleError)
+    );
   }
 }

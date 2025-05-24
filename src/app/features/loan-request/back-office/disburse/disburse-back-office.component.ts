@@ -1,29 +1,33 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoanRequestService } from 'src/app/core/services/loan-request.service';
-import { LoanRequestApprovalDTO} from 'src/app/core/models/loan-request-approval.dto';
-import { LoadingComponent } from 'src/app/shared/components/loading/loading.component';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import Swal from 'sweetalert2';
+import { LoanRequestApprovalDTO } from 'src/app/core/models/loan-request-approval.dto';
+import { LoanReviewDTO } from 'src/app/core/models/loan-review.dto';
+import { ToastrService } from 'ngx-toastr';
+import { LoanRequestReviewComponent } from 'src/app/shared/components/loan-request-review/loan-request-review.component';
 
 @Component({
   selector: 'app-loan-request-detail',
   standalone: true,
-  imports: [CommonModule, FormsModule, LoadingComponent],
-  templateUrl: './disburse-back-office.component.html',
-  styleUrls: ['./disburse-back-office.component.css']
+  imports: [LoanRequestReviewComponent],
+  template: `<app-loan-request-review
+  [loanRequest]="loanRequest"
+  [isLoading]="isLoading"
+  [isSubmitting]="isSubmitting"
+  [role]="'BACKOFFICE'"
+  (reviewSubmitted)="disburse($event)" />`
 })
 export class LoanRequestDisburseComponent implements OnInit {
   loanRequest!: LoanRequestApprovalDTO;
-  isLoading: boolean = true;
-  isError: boolean = false;
+  isLoading = true;
+  isSubmitting = false;
   notes: string = '';
 
   constructor(
-    private loanRequestService: LoanRequestService,
     private route: ActivatedRoute,
-    private router: Router
+    private loanRequestService: LoanRequestService,
+    private router: Router,
+    private toast: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -35,48 +39,40 @@ export class LoanRequestDisburseComponent implements OnInit {
 
   fetchLoanRequestDetail(loanRequestId: string): void {
     this.isLoading = true;
-    this.isError = false;
     this.loanRequestService.getById(loanRequestId).subscribe({
       next: (data) => {
         this.loanRequest = data;
         this.isLoading = false;
       },
-      error: (error) => {
-        console.error('Error fetching loan request detail:', error);
-        this.isError = true;
+      error: () => {
         this.isLoading = false;
       }
     });
   }
 
-  disburse(): void {
-    if (!this.loanRequest) return;
+  disburse(event: { status: string; notes: string }): void {
+    this.isSubmitting = true;
 
-    Swal.fire({
-      title: 'Konfirmasi Pencairan',
-      text: 'Apakah Anda yakin ingin mencairkan dana untuk pengajuan ini?',
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: 'Ya, Cairkan',
-      cancelButtonText: 'Batal'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.loanRequestService.disburseLoanRequest(this.loanRequest.id, this.notes).subscribe({
-          next: () => {
-            Swal.fire('Berhasil!', 'Dana berhasil dicairkan.', 'success').then(() => {
-              this.goBack();
-            });
-          },
-          error: (err) => {
-            Swal.fire('Gagal!', err.error.message || 'Terjadi kesalahan saat mencairkan dana.', 'error');
-          }
-        });
+    const payload: LoanReviewDTO = {
+      status: event.status,
+      notes: event.notes,
+      notesIdentitas: '',
+      notesPlafond: '',
+      notesSummary: ''
+    };
+
+    this.loanRequestService.disburseLoanRequest(this.loanRequest.id, payload).subscribe({
+      next: (response) => {
+        this.toast.success(response.message || 'Dana berhasil dicairkan', 'Sukses');
+        this.router.navigate(['/loan-request/back-office/all']);
+      },
+      error: (err) => {
+        const message = err?.error?.message || 'Terjadi kesalahan saat mencairkan dana';
+        this.toast.error(message, 'Gagal');
+      },
+      complete: () => {
+        this.isSubmitting = false;
       }
     });
-  }
-
-  // Method to go back to the list of loan requests
-  goBack(): void {
-    this.router.navigate(['/loan-request/back-office/all']); // Sesuaikan dengan rute daftar loan request Back Office
   }
 }

@@ -57,3 +57,50 @@ h2 {
 h4 {
   font-weight: bold;
 }
+
+
+.stepper {
+  position: relative;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  color: #6c757d;
+  transition: color 0.3s ease;
+}
+
+.step.active {
+  color: #0d6efd;
+}
+
+.circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #dee2e6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  margin-bottom: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.step.active .circle {
+  background-color: #0d6efd;
+  color: white;
+}
+
+.label {
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.line {
+  flex: 0.1;
+  height: 2px;
+  background-color: #dee2e6;
+}

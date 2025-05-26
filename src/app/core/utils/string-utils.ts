@@ -24,14 +24,17 @@ export class StringUtils {
     return name.trim().toUpperCase().replace(/\s+/g, '_');
   }
 
-  static formatJenisKelamin(jk: string): string {
-    switch (jk) {
-      case 'LAKI_LAKI':
-        return 'Laki-laki';
-      case 'PEREMPUAN':
-        return 'Perempuan';
-      default:
-        return 'Tidak Diketahui';
-    }
+static formatJenisKelamin(jk: string | null | undefined): string {
+  if (!jk) {
+    return 'Tidak Diketahui';
   }
+  switch (jk) {
+    case 'LAKI_LAKI':
+      return 'Laki-laki';
+    case 'PEREMPUAN':
+      return 'Perempuan';
+    default:
+      return 'Tidak Diketahui';
+  }
+}
 }

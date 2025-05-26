@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError, catchError, map } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { DashboardLoanRequestCountDto } from '../models/dashboard-loan-request-to-check';
 
 @Injectable({ providedIn: 'root' })
 export class DashboardService {
@@ -21,4 +22,13 @@ export class DashboardService {
     );
   }
 
+  getLoanRequestCount(): Observable<DashboardLoanRequestCountDto> {
+    return this.http.get<any>(`${this.baseUrl}/loan`).pipe(
+      map(response => ({
+        loanRequestsToCheck: response.data.loanRequestsToCheck,
+        loanRequestsCheckedByUser: response.data.loanRequestsCheckedByUser,
+      })),
+      catchError(this.handleError)
+    );  
+  }
 }

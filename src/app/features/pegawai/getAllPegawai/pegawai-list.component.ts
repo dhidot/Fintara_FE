@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms'; // tambahkan FormsModule
 import { LoadingComponent } from 'src/app/shared/components/loading/loading.component';
 import { TableActionButtonsComponent } from 'src/app/shared/components/table-action-buttons/table-action-buttons.component';
 import { StringUtils } from 'src/app/core/utils/string-utils';
+import { JenisKelamin } from 'src/app/core/enums/jenis-kelamin';
 
 
 @Component({
@@ -40,6 +41,7 @@ export class ListPegawaiComponent implements OnInit {
           ...p,
           nip: p.pegawaiDetails?.nip ?? '-',
           branchName: p.pegawaiDetails?.branchName ?? '-',
+          jenisKelamin: p.pegawaiDetails?.jenisKelamin ?? '-',
           statusPegawai: p.pegawaiDetails?.statusPegawai ?? '-',
         }));
         this.filteredPegawaiList = [...this.pegawaiList]; // Inisialisasi hasil filter

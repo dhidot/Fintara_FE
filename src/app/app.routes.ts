@@ -13,6 +13,8 @@ import { loanApprovalRoutes } from './features/loan-approval/loan-approval.route
 import { NotFoundComponent } from './layout/components/not-found/not-found.component';
 import { ForbiddenComponent } from './layout/components/forbidden/forbidden.component';
 import { dashboardRoutes } from './features/dashboard/dashboard.routes';
+import { LandingComponent } from './features/landing/landing.component';
+import { landingRoutes } from './features/landing/landing.routes';
 
 
 export const routes: Routes = [
@@ -32,6 +34,7 @@ export const routes: Routes = [
       ...loanApprovalRoutes,
     ]
   },
+  ...landingRoutes,
   { path: 'forbidden', component: ForbiddenComponent },
   { path: 'not-found', component: NotFoundComponent },
   { path: '**', redirectTo: 'not-found' }

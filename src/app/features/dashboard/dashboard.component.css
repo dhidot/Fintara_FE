@@ -55,3 +55,8 @@
 .card-plafond {
   background: linear-gradient(135deg, #dc3545, #f26674);
 }
+
+.card-loan-request {
+  background-color: #0d6efd; /* biru Bootstrap */
+  color: #fff;
+}

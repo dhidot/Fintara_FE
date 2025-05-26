@@ -1,6 +1,7 @@
 <app-loading *ngIf="isLoading"></app-loading>
 
 <div class="row g-4" *ngIf="!isLoading">
+  <!-- Superadmin cards -->
   <div class="col-12 col-sm-6 col-lg-4" *ngFor="let card of cards">
     <div class="card text-white" [ngClass]="card.bgColor">
       <div class="card-body">

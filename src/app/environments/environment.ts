@@ -1,4 +1,5 @@
-const baseUrl = 'https://00da-103-165-222-114.ngrok-free.app/api/v1';
+const baseUrl = 'http://34.55.162.194';
+// baseUrl = https://00da-103-165-222-114.ngrok-free.app/api/v1
 
 export const environment = {
   production: true,

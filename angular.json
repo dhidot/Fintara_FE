@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "SakuBCA_FE": {
+    "fintara": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -29,7 +29,7 @@
                 "output": "/"
               }
             ],
-            "outputPath": "dist/saku-bca-fe",
+            "outputPath": "dist/fintara",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "baseHref": "/",
@@ -86,10 +86,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "SakuBCA_FE:build:production"
+              "buildTarget": "fintara:build:production"
             },
             "development": {
-              "buildTarget": "SakuBCA_FE:build:development"
+              "buildTarget": "fintara:build:development"
             }
           },
           "defaultConfiguration": "development"

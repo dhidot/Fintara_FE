@@ -1,5 +1,5 @@
 {
-  "name": "saku-bca-fe",
+  "name": "fintara",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:SakuBCA_FE": "node dist/saku-bca-fe/server/server.mjs"
+    "serve:ssr:fintara": "node dist/saku-bca-fe/server/server.mjs"
   },
   "private": true,
   "dependencies": {

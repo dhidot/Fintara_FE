@@ -1,17 +1,19 @@
+const baseUrl = 'https://00da-103-165-222-114.ngrok-free.app';
+
 export const environment = {
   production: true,
-  userBaseURL: 'https://8b4c-103-165-222-114.ngrok-free.app/api/v1/users', // Sesuaikan dengan URL API user
-  authBaseURL: 'https://8b4c-103-165-222-114.ngrok-free.app/api/v1/auth',  // Sesuaikan dengan URL API backend
-  rolesBaseURL: 'https://8b4c-103-165-222-114.ngrok-free.app/api/v1/roles', // Sesuaikan dengan URL API roles
-  roleFeatureBaseURL: 'https://8b4c-103-165-222-114.ngrok-free.app/api/v1/role-features', // Sesuaikan dengan URL API roles-feature
-  plafondsBaseURL: 'https://8b4c-103-165-222-114.ngrok-free.app/api/v1/plafonds', // Sesuaikan dengan URL API plafond
-  pegawaiProfileBaseURL: 'https://8b4c-103-165-222-114.ngrok-free.app/api/v1/pegawaiprofile', // Sesuaikan dengan URL API pegawai-profile
-  pegawaiBaseURL: 'https://8b4c-103-165-222-114.ngrok-free.app/api/v1/pegawai', // Sesuaikan dengan URL API pegawai
-  loanRequestBaseURL: 'https://8b4c-103-165-222-114.ngrok-free.app/api/v1/loan-requests', // Sesuaikan dengan URL API loan-request
-  loanApprovalsBaseURL: 'https://8b4c-103-165-222-114.ngrok-free.app/api/v1/loan-approvals', // Sesuaikan dengan URL API loan-approval
-  featuresBaseURL: 'https://8b4c-103-165-222-114.ngrok-free.app/api/v1/features', // Sesuaikan dengan URL API features
-  dashboardBaseURL: 'https://8b4c-103-165-222-114.ngrok-free.app/api/v1/dashboard', // Sesuaikan dengan URL API dashboard
-  profileCustomerBaseURL: 'https://8b4c-103-165-222-114.ngrok-free.app/api/v1/profile-customer', // Sesuaikan dengan URL API profile-customer
-  customerBaseURL: 'https://8b4c-103-165-222-114.ngrok-free.app/api/v1/customer', // Sesuaikan dengan URL API customer
-  branchesBaseURL: 'https://8b4c-103-165-222-114.ngrok-free.app/api/v1/branches', // Sesuaikan dengan URL API branches
+  userBaseURL: `${baseUrl}/users`,
+  authBaseURL: `${baseUrl}/auth`,
+  rolesBaseURL: `${baseUrl}/roles`,
+  roleFeatureBaseURL: `${baseUrl}/role-features`,
+  plafondsBaseURL: `${baseUrl}/plafonds`,
+  pegawaiProfileBaseURL: `${baseUrl}/pegawaiprofile`,
+  pegawaiBaseURL: `${baseUrl}/pegawai`,
+  loanRequestBaseURL: `${baseUrl}/loan-requests`,
+  loanApprovalsBaseURL: `${baseUrl}/loan-approvals`,
+  featuresBaseURL: `${baseUrl}/features`,
+  dashboardBaseURL: `${baseUrl}/dashboard`,
+  profileCustomerBaseURL: `${baseUrl}/profile-customer`,
+  customerBaseURL: `${baseUrl}/customer`,
+  branchesBaseURL: `${baseUrl}/branches`,
 };

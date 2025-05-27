@@ -5,6 +5,7 @@ import { LoanRequestApprovalDTO } from 'src/app/core/models/loan-request-approva
 import { LoanReviewDTO } from 'src/app/core/models/loan-review.dto';
 import { ToastrService } from 'ngx-toastr';
 import { LoanRequestReviewComponent } from '../../../../shared/components/loan-request-review/loan-request-review.component';
+import e from 'express';
 
 @Component({
   selector: 'app-loan-request-detail',
@@ -42,15 +43,15 @@ export class BmReviewComponent implements OnInit {
     });
   }
 
-  review(event: { status: string; notes: string }) {
+  review(event: { status: string; notes: string; notesIdentitas?: string; notesPlafond?: string; notesSummary?: string }) {
     this.isSubmitting = true;
 
     const payload: LoanReviewDTO = {
       status: event.status,
       notes: event.notes,
-      notesIdentitas: '',
-      notesPlafond: '',
-      notesSummary: ''
+      notesIdentitas: event.notesIdentitas || '',
+      notesPlafond: event.notesPlafond || '',
+      notesSummary: event.notesSummary || ''
     };
 
     this.loanRequestService.reviewLoanRequestByBm(this.loanRequest.id, payload).subscribe({

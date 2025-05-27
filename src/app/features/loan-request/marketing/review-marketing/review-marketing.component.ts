@@ -42,15 +42,15 @@ export class MarketingReviewComponent implements OnInit {
     });
   }
 
-  review(event: { status: string; notes: string }) {
+  review(event: { status: string; notes: string, notesIdentitas?: string, notesPlafond?: string, notesSummary?: string }) {
     this.isSubmitting = true;
 
     const payload: LoanReviewDTO = {
       status: event.status,
       notes: event.notes,
-      notesIdentitas: '',
-      notesPlafond: '',
-      notesSummary: ''
+      notesIdentitas: event.notesIdentitas || '',
+      notesPlafond: event.notesPlafond || '',
+      notesSummary: event.notesSummary || ''
     };
 
     this.loanRequestService.reviewLoanRequest(this.loanRequest.id, payload).subscribe({

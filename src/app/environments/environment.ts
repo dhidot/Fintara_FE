@@ -1,5 +1,6 @@
-const baseUrl = 'http://34.55.162.194/api/v1';
-// baseUrl = https://00da-103-165-222-114.ngrok-free.app/api/v1
+const baseUrl = 'http://localhost:8080/api/v1';
+// baseUrl = http://34.55.162.194/api/v1
+// localhost:8000/api/v1
 
 export const environment = {
   production: true,

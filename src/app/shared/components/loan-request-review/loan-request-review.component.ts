@@ -17,7 +17,13 @@ export class LoanRequestReviewComponent {
   @Input() isLoading = true;
   @Input() isSubmitting = false;
   @Input() role!: 'MARKETING' | 'BM' | 'BACKOFFICE';
-  @Output() reviewSubmitted = new EventEmitter<{ status: string; notes: string }>();
+  @Output() reviewSubmitted = new EventEmitter<{   
+    status: string;
+    notes: string;
+    notesIdentitas: string;
+    notesPlafond: string;
+    notesSummary: string; 
+  }>();
   ktpPhotoUrl: string = '';
   step: 'IDENTITAS' | 'PLAFOND' | 'SUMMARY' = 'IDENTITAS';
   stepOrder: string[] = ['IDENTITAS', 'PLAFOND', 'SUMMARY'];
@@ -57,9 +63,14 @@ export class LoanRequestReviewComponent {
   submitReview(status: string) {
     if (this.reviewForm.invalid) return;
 
+    const formValues = this.reviewForm.value;
+
     this.reviewSubmitted.emit({
       status,
-      notes: this.reviewForm.value.notes,
+      notes: formValues.notes,
+      notesIdentitas: formValues.notesIdentitas,
+      notesPlafond: formValues.notesPlafond,
+      notesSummary: formValues.notesSummary
     });
   }
 }

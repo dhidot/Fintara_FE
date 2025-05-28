@@ -5,6 +5,8 @@ import { LoanRequestApprovalDTO } from 'src/app/core/models/loan-request-approva
 import { LoanReviewDTO } from 'src/app/core/models/loan-review.dto';
 import { ToastrService } from 'ngx-toastr';
 import { LoanRequestReviewComponent } from 'src/app/shared/components/loan-request-review/loan-request-review.component';
+import { LoanApprovalService } from 'src/app/core/services/loan-approval.service';
+import { LoanApprovalDTO } from 'src/app/core/models/loan-approval.dto';
 
 @Component({
   selector: 'app-loan-request-detail',
@@ -14,11 +16,13 @@ import { LoanRequestReviewComponent } from 'src/app/shared/components/loan-reque
   [loanRequest]="loanRequest"
   [isLoading]="isLoading"
   [isSubmitting]="isSubmitting"
+  [previousApprovals]="previousApprovals"
   [role]="'BACKOFFICE'"
   (reviewSubmitted)="disburse($event)" />`
 })
 export class LoanRequestDisburseComponent implements OnInit {
   loanRequest!: LoanRequestApprovalDTO;
+  previousApprovals: LoanApprovalDTO[] = []; // tambah properti ini
   isLoading = true;
   isSubmitting = false;
   notes: string = '';
@@ -26,6 +30,7 @@ export class LoanRequestDisburseComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private loanRequestService: LoanRequestService,
+    private loanApprovalService: LoanApprovalService,
     private router: Router,
     private toast: ToastrService
   ) {}
@@ -48,13 +53,25 @@ export class LoanRequestDisburseComponent implements OnInit {
         this.isLoading = false;
       }
     });
+
+        // Ambil previous approvals juga
+    this.loanApprovalService.getApprovalsByLoanRequest(loanRequestId).subscribe({
+      next: (approvals) => {
+        console.log('Previous Approvals:', approvals);
+        this.previousApprovals = approvals;
+      },
+      error: () => {
+        this.previousApprovals = [];
+      }
+    });
   }
 
-  disburse(event: { status: string;}): void {
+  disburse(event: { status: string; notes?: string}): void {
     this.isSubmitting = true;
 
     const payload: LoanReviewDTO = {
       status: event.status,
+      notes: event.notes || '',
       notesIdentitas: '',
       notesPlafond: '',
       notesSummary: ''

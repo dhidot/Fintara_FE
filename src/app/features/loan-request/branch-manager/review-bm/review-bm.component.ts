@@ -49,6 +49,7 @@ export class BmReviewComponent implements OnInit {
     // Ambil previous approvals juga
     this.loanApprovalService.getApprovalsByLoanRequest(id).subscribe({
       next: (approvals) => {
+        console.log('Previous Approvals:', approvals);
         this.previousApprovals = approvals;
       },
       error: () => {
@@ -57,11 +58,12 @@ export class BmReviewComponent implements OnInit {
     });
   }
 
-  review(event: { status: string; notesIdentitas?: string; notesPlafond?: string; notesSummary?: string }) {
+  review(event: { status: string; notes?: string; notesIdentitas?: string; notesPlafond?: string; notesSummary?: string }) {
     this.isSubmitting = true;
 
     const payload: LoanReviewDTO = {
       status: event.status,
+      notes: event.notesIdentitas || '', // gunakan notesIdentitas sebagai notes umum
       notesIdentitas: event.notesIdentitas || '',
       notesPlafond: event.notesPlafond || '',
       notesSummary: event.notesSummary || ''

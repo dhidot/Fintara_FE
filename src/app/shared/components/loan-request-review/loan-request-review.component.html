@@ -95,16 +95,43 @@
   <form [formGroup]="reviewForm">
     <ng-container [ngSwitch]="step">
       <!-- IDENTITAS -->
-      <div *ngSwitchCase="'IDENTITAS'">
-        <h5>Review Identitas</h5>
-        <textarea class="form-control mb-3" formControlName="notesIdentitas" placeholder="Catatan Identitas"></textarea>
-      </div>
+  <div *ngSwitchCase="'IDENTITAS'">
+    <h5>Review Identitas</h5>
+
+    <!-- Catatan Reviewer Sebelumnya -->
+    <div *ngIf="getPreviousNotesByStep('notesIdentitas').length">
+      <h6 class="text-muted">Catatan Reviewer Sebelumnya</h6>
+      <ul class="list-group mb-3">
+        <li class="list-group-item small bg-warning" *ngFor="let note of getPreviousNotesByStep('notesIdentitas')">
+          <strong>{{ note.handledByName }}</strong> ({{ note.approvedAt | date:'short' }}):
+          <br>
+          {{ note.notesIdentitas }}
+        </li>
+      </ul>
+    </div>
+
+    <!-- Catatan Reviewer Sekarang -->
+    <textarea class="form-control mb-3" formControlName="notesIdentitas" placeholder="Catatan Identitas"></textarea>
+  </div>
 
       <!-- PLAFOND -->
-      <div *ngSwitchCase="'PLAFOND'">
-        <h5>Review Plafond</h5>
-        <textarea class="form-control mb-3" formControlName="notesPlafond" placeholder="Catatan Plafond"></textarea>
-      </div>
+  <div *ngSwitchCase="'PLAFOND'">
+    <h5>Review Plafond</h5>
+
+    <div *ngIf="getPreviousNotesByStep('notesPlafond').length">
+      <h6 class="text-muted">Catatan Reviewer Sebelumnya</h6>
+      <ul class="list-group mb-3">
+        <li class="list-group-item small bg-warning" *ngFor="let note of getPreviousNotesByStep('notesPlafond')">
+          <strong>{{ note.handledByName || note.handledByRole }}</strong> ({{ note.approvedAt | date:'short' }}):
+          <br>
+          {{ note.notesPlafond }}
+        </li>
+      </ul>
+    </div>
+
+  <textarea class="form-control mb-3" formControlName="notesPlafond" placeholder="Catatan Plafond"></textarea>
+</div>
+
 
       <!-- SUMMARY -->
       <div *ngSwitchCase="'SUMMARY'">
@@ -142,8 +169,24 @@
           <img [src]="loanRequest.customerSelfieKtpPhotoUrl" class="img-thumbnail shadow" style="max-height: 250px;">
         </div>
 
-        <textarea class="form-control mb-3" formControlName="notesSummary" placeholder="Catatan Summary"></textarea>
+        <div *ngSwitchCase="'SUMMARY'">
+    <h5 class="mb-3">Ringkasan Pengajuan</h5>
+    <!-- Data ringkasan seperti sebelumnya -->
 
+    <!-- Catatan Reviewer Sebelumnya -->
+    <div *ngIf="getPreviousNotesByStep('notesSummary').length">
+      <h6 class="text-muted">Catatan Reviewer Sebelumnya</h6>
+      <ul class="list-group mb-3">
+        <li class="list-group-item small bg-warning" *ngFor="let note of getPreviousNotesByStep('notesSummary')">
+          <strong>{{ note.handledByName || note.handledByRole }}</strong> ({{ note.approvedAt | date:'short' }}):
+          <br>
+          {{ note.notesSummary }}
+        </li>
+      </ul>
+    </div>
+        <textarea class="form-control mb-3" formControlName="notesSummary" placeholder="Catatan Summary"></textarea>
+        <textarea class="form-control mb-3" formControlName="notes" placeholder="Catatan Akhir"></textarea>
+  </div>
         <!-- Action Buttons -->
         <div class="d-flex gap-2 flex-wrap">
           <ng-container [ngSwitch]="role">

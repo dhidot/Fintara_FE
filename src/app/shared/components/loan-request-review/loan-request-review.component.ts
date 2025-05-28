@@ -39,6 +39,7 @@ export class LoanRequestReviewComponent {
 
   constructor(private fb: FormBuilder, private modalService: NgbModal) {
     this.reviewForm = this.fb.group({
+      notes: [''],
       notesIdentitas: [''],
       notesPlafond: [''],
       notesSummary: ['']
@@ -60,14 +61,18 @@ export class LoanRequestReviewComponent {
     else if (this.step === 'PLAFOND') this.step = 'IDENTITAS';
   }
 
-  get filteredPreviousApprovals(): LoanApprovalDTO[] {
-    if (this.role === 'BM') {
-      return this.previousApprovals.filter(a => a.handledByRole === 'MARKETING');
-    } else if (this.role === 'BACKOFFICE') {
-      return this.previousApprovals.filter(a => a.handledByRole === 'MARKETING' || a.handledByRole === 'BM');
-    }
-    return [];
-  }
+  // get filteredPreviousApprovals(): LoanApprovalDTO[] {
+  //   if (this.role === 'BM') {
+  //     return this.previousApprovals.filter(a => a.handledByRole === 'MARKETING');
+  //   } else if (this.role === 'BACKOFFICE') {
+  //     return this.previousApprovals.filter(a => a.handledByRole === 'MARKETING' || a.handledByRole === 'BM');
+  //   }
+  //   return [];
+  // }
+
+getPreviousNotesByStep(field: 'notesIdentitas' | 'notesPlafond' | 'notesSummary') {
+  return this.previousApprovals.filter(pa => pa[field] && pa[field].trim() !== '');
+}
 
   submitReview(status: string) {
     if (this.reviewForm.invalid) return;

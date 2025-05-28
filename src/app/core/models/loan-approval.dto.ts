@@ -4,6 +4,7 @@ export interface LoanApprovalDTO {
   handledByName: string;
   handledByRole: 'MARKETING' | 'BM' | 'BACKOFFICE' | string;
   status: string;
+  notes: string;
   notesIdentitas: string;
   notesPlafond: string;
   notesSummary: string;

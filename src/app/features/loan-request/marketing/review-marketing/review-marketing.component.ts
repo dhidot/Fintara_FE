@@ -46,23 +46,14 @@ export class MarketingReviewComponent implements OnInit {
       },
       error: () => (this.isLoading = false),
     });
-
-    // Fetch previous approvals terpisah
-    this.loanApprovalService.getApprovalsByLoanRequest(id).subscribe({
-      next: (approvals) => {
-        this.previousApprovals = approvals;
-      },
-      error: () => {
-        this.previousApprovals = [];
-      }
-    });
   }
 
-  review(event: { status: string; notesIdentitas?: string, notesPlafond?: string, notesSummary?: string }) {
+  review(event: { status: string; notes?: string; notesIdentitas?: string, notesPlafond?: string, notesSummary?: string }) {
     this.isSubmitting = true;
 
     const payload: LoanReviewDTO = {
       status: event.status,
+      notes: event.notes || '',
       notesIdentitas: event.notesIdentitas || '',
       notesPlafond: event.notesPlafond || '',
       notesSummary: event.notesSummary || ''

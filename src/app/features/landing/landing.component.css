@@ -39,6 +39,11 @@
 
 /* Color Presets - These classes override global colors when applied to any section or element, providing reuse of the sam color scheme. */
 
+/* Hero Section */
+.hero{
+  background: linear-gradient(45deg, #04a8b0, #0464ac);
+}
+
 .light-background {
   --background-color: #faf9fb;
   --surface-color: #ffffff;

@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { LoanRequestApprovalDTO } from 'src/app/core/models/loan-request-approval.dto';
 import { ReviewActionButtonComponent } from '../../../shared/components/review-action-buttons/review-action-button.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { LoanApprovalDTO } from 'src/app/core/models/loan-approval.dto';
 
 @Component({
   selector: 'app-loan-request-review',
@@ -17,9 +18,9 @@ export class LoanRequestReviewComponent {
   @Input() isLoading = true;
   @Input() isSubmitting = false;
   @Input() role!: 'MARKETING' | 'BM' | 'BACKOFFICE';
+  @Input() previousApprovals: LoanApprovalDTO[] = [];
   @Output() reviewSubmitted = new EventEmitter<{   
     status: string;
-    notes: string;
     notesIdentitas: string;
     notesPlafond: string;
     notesSummary: string; 
@@ -40,8 +41,7 @@ export class LoanRequestReviewComponent {
     this.reviewForm = this.fb.group({
       notesIdentitas: [''],
       notesPlafond: [''],
-      notesSummary: [''],
-      notes: [''],
+      notesSummary: ['']
     });
   }
 
@@ -60,6 +60,15 @@ export class LoanRequestReviewComponent {
     else if (this.step === 'PLAFOND') this.step = 'IDENTITAS';
   }
 
+  get filteredPreviousApprovals(): LoanApprovalDTO[] {
+    if (this.role === 'BM') {
+      return this.previousApprovals.filter(a => a.handledByRole === 'MARKETING');
+    } else if (this.role === 'BACKOFFICE') {
+      return this.previousApprovals.filter(a => a.handledByRole === 'MARKETING' || a.handledByRole === 'BM');
+    }
+    return [];
+  }
+
   submitReview(status: string) {
     if (this.reviewForm.invalid) return;
 
@@ -67,7 +76,6 @@ export class LoanRequestReviewComponent {
 
     this.reviewSubmitted.emit({
       status,
-      notes: formValues.notes,
       notesIdentitas: formValues.notesIdentitas,
       notesPlafond: formValues.notesPlafond,
       notesSummary: formValues.notesSummary

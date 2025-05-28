@@ -50,12 +50,11 @@ export class LoanRequestDisburseComponent implements OnInit {
     });
   }
 
-  disburse(event: { status: string; notes: string }): void {
+  disburse(event: { status: string;}): void {
     this.isSubmitting = true;
 
     const payload: LoanReviewDTO = {
       status: event.status,
-      notes: event.notes,
       notesIdentitas: '',
       notesPlafond: '',
       notesSummary: ''

@@ -38,11 +38,96 @@
 }
 
 /* Color Presets - These classes override global colors when applied to any section or element, providing reuse of the sam color scheme. */
+/* Global css */
+.navmenu a {
+  cursor: pointer;
+}
 
 /* Hero Section */
 .hero{
   background: linear-gradient(45deg, #04a8b0, #0464ac);
 }
+
+/* Keuntungan Section */
+.keuntungan .card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.keuntungan .card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Plafond */
+.swiper {
+  width: 100%;
+  padding: 40px 0;
+  position: relative;
+  z-index: 1;
+}
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+#plafond-card {
+  width: 280px;
+  height: 340px;
+  background: transparent;
+  border: none;
+  /* border-radius: 16px; */
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#plafond-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+
+#plafond-card img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  margin-bottom: 16px;
+}
+
+#plafond-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+}
+
+#plafond-card p {
+  font-size: 0.95rem;
+  margin: 4px 0;
+}
+
+.swiper-pagination-bullet {
+  background: #007bff;
+  opacity: 0.5;
+}
+
+.swiper-pagination-bullet-active {
+  opacity: 1;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #007bff;
+  font-size: 24px;
+  z-index: 10;
+}
+
+
 
 .light-background {
   --background-color: #faf9fb;

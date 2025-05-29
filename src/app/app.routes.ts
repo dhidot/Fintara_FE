@@ -1,7 +1,6 @@
 // src/app/app.routes.ts
 import { Routes } from '@angular/router';
 import { ShellComponent } from './layout/shell/shell.component';
-import { DashboardComponent } from './features/dashboard/dashboard.component';
 import { authRoutes } from './features/auth/auth.routes';
 import { pegawaiRoutes } from './features/pegawai/pegawai.routes';
 import { branchRoutes } from './features/branch/branch.routes';
@@ -18,7 +17,7 @@ import { landingRoutes } from './features/landing/landing.routes';
 
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
   ...authRoutes,
   {
     path: '',

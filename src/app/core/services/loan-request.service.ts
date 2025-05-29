@@ -4,6 +4,8 @@ import { Observable, throwError, catchError, map } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { LoanRequestApprovalDTO } from '../models/loan-request-approval.dto';
 import { LoanReviewDTO } from '../models/loan-review.dto';
+import { LoanSimulationDTO } from '../models/loan-simulation.dto';
+import { LoanSimulationResponseDTO } from '../models/loan-simulation-response.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +18,14 @@ export class LoanRequestService {
   private handleError(error: any): Observable<never> {
     console.error('LoanRequestService error:', error);
     return throwError(() => new Error(error.message || 'Terjadi kesalahan pada permintaan.'));
+  }
+
+  // LOAN SIMULATION
+  simulateLoan(payload: LoanSimulationDTO): Observable<LoanSimulationResponseDTO> {
+    return this.http.post<any>(`${this.apiUrl}/loan-web-simulate`, payload).pipe(
+      map(response => response.data as LoanSimulationResponseDTO),
+      catchError(this.handleError)
+    );
   }
 
   // MARKETING

@@ -16,8 +16,7 @@ bootstrapApplication(AppComponent, {
   providers: [
     NgbModal,
     provideRouter(routes),
-    { provide: LocationStrategy, useClass: HashLocationStrategy },
-    provideAnimations(), // pilih ini
+    provideAnimations(),
     provideHttpClient(withInterceptors([AppHttpInterceptor])),
     importProvidersFrom(FormsModule),
     provideToastr(),

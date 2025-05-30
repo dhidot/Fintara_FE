@@ -63,7 +63,7 @@ export class BmReviewComponent implements OnInit {
 
     const payload: LoanReviewDTO = {
       status: event.status,
-      notes: event.notesIdentitas || '', // gunakan notesIdentitas sebagai notes umum
+      notes: event.notes || '', 
       notesIdentitas: event.notesIdentitas || '',
       notesPlafond: event.notesPlafond || '',
       notesSummary: event.notesSummary || ''

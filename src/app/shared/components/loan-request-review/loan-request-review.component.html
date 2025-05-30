@@ -222,7 +222,7 @@
                 (actionClick)="submitReview($event)">
               </app-review-action-button>
 
-              <app-review-action-button label="Tolak" status="DITOLAK_BO" styleClass="btn-danger"
+              <app-review-action-button label="Tolak" status="NOT_DISBURSED" styleClass="btn-danger"
                 [loading]="isSubmitting" [disabled]="isSubmitting"
                 [confirmText]="'Apakah Anda yakin ingin membatalkan pencairan pengajuan ini?'"
                 (actionClick)="submitReview($event)">

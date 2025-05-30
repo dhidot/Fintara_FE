@@ -25,7 +25,6 @@ export class LoanRequestDisburseComponent implements OnInit {
   previousApprovals: LoanApprovalDTO[] = []; // tambah properti ini
   isLoading = true;
   isSubmitting = false;
-  notes: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -39,8 +38,8 @@ export class LoanRequestDisburseComponent implements OnInit {
     const loanRequestId = this.route.snapshot.paramMap.get('id');
     if (loanRequestId) {
       this.fetchLoanRequestDetail(loanRequestId);
+      }
     }
-  }
 
   fetchLoanRequestDetail(loanRequestId: string): void {
     this.isLoading = true;
@@ -66,15 +65,15 @@ export class LoanRequestDisburseComponent implements OnInit {
     });
   }
 
-  disburse(event: { status: string; notes?: string}): void {
+  disburse(event: { status: string; notes?: string; notesIdentitas?: string; notesPlafond?: string; notesSummary?: string }): void {
     this.isSubmitting = true;
 
     const payload: LoanReviewDTO = {
       status: event.status,
       notes: event.notes || '',
-      notesIdentitas: '',
-      notesPlafond: '',
-      notesSummary: ''
+      notesIdentitas: event.notesIdentitas || '',
+      notesPlafond: event.notesPlafond || '',
+      notesSummary: event.notesSummary || ''
     };
 
     this.loanRequestService.disburseLoanRequest(this.loanRequest.id, payload).subscribe({

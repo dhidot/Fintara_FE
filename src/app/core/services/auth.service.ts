@@ -76,6 +76,13 @@ export class AuthService {
     );
   }
 
+  resendVerificationEmail(email: string): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/resend-verification`, { email }).pipe(
+      map(response => response.data),
+      catchError(this.handleError)
+    );
+  }
+
   getAllPegawai(): Observable<any[]> {
     return this.http.get<any>(`${this.pegawaiBaseUrl}`).pipe(
       map(response => response.data),

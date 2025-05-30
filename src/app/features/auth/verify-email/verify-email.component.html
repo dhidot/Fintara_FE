@@ -33,14 +33,44 @@
   <p class="fs-4">{{ message }}</p>
 
   <p class="text-muted mt-2" *ngIf="status === 'success'">
-    Anda akan diarahkan ke halaman login dalam {{ countdown }} detik...
+    Anda akan diarahkan ke halaman home dalam {{ countdown }} detik...
   </p>
 
   <a routerLink="/login" class="btn btn-primary mt-3" *ngIf="status === 'success'">
-    Masuk Sekarang
+    <!-- pindah ke home bukan masuk -->
+     Pindah ke Halaman Home 
   </a>
 
   <a routerLink="/" class="btn btn-outline-warning mt-3" *ngIf="status === 'error'">
     Kembali ke Beranda
   </a>
+
+  <!-- Resend Verification Email Form -->
+  <div *ngIf="status === 'error'" class="mt-4 w-100" style="max-width: 400px;">
+    <p class="text-muted mb-2">Masukkan email kamu untuk mengirim ulang email verifikasi:</p>
+    <input
+      type="email"
+      class="form-control mb-2"
+      placeholder="Masukkan email kamu"
+      [(ngModel)]="email"
+    />
+    <button
+      class="btn btn-warning w-100"
+      [disabled]="isResending"
+      (click)="resendVerification()"
+    >
+      {{ isResending ? 'Mengirim ulang...' : 'Kirim Ulang Email Verifikasi' }}
+    </button>
+
+    <p
+      *ngIf="resendMessage"
+      class="mt-2"
+      [ngClass]="{
+        'text-success': resendMessage.includes('berhasil'),
+        'text-danger': resendMessage.includes('Gagal')
+      }"
+    >
+      {{ resendMessage }}
+    </p>
+  </div>
 </div>

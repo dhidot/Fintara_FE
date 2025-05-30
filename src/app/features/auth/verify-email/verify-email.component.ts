@@ -2,17 +2,21 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-verify-email',
   templateUrl: './verify-email.component.html',
-  imports: [CommonModule]
+  imports: [CommonModule, FormsModule]
 })
 export class VerifyEmailComponent implements OnInit {
   status: 'success' | 'error' | null = null;
   message: string = '';
   countdown: number = 5;
   isLoading = false;
+  email: string = '';
+  isResending = false;
+  resendMessage: string = ''; 
 
   constructor(
     private route: ActivatedRoute,
@@ -21,7 +25,6 @@ export class VerifyEmailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Contoh simulasi sukses (kamu bisa ganti dengan real API call)
     const token = this.route.snapshot.queryParamMap.get('token');
 
     if (token) {
@@ -50,8 +53,29 @@ export class VerifyEmailComponent implements OnInit {
       this.countdown--;
       if (this.countdown <= 0) {
         clearInterval(interval);
-        this.router.navigate(['/login']);
+        this.router.navigate(['/home']);
       }
     }, 1000);
+  }
+
+    resendVerification(): void {
+    if (!this.email) {
+      this.resendMessage = 'Email tidak boleh kosong.';
+      return;
+    }
+
+    this.isResending = true;
+    this.resendMessage = '';
+
+    this.authService.resendVerificationEmail(this.email).subscribe({
+      next: () => {
+        this.isResending = false;
+        this.resendMessage = 'Email verifikasi berhasil dikirim ulang.';
+      },
+      error: (err) => {
+        this.isResending = false;
+        this.resendMessage = err.message || 'Gagal mengirim ulang email verifikasi.';
+      }
+    });
   }
 }

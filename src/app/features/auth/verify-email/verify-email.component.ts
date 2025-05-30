@@ -39,7 +39,7 @@ export class VerifyEmailComponent implements OnInit {
         error: () => {
           this.isLoading = false;
           this.status = 'error';
-          this.message = 'Token verifikasi tidak valid atau sudah kedaluwarsa.';
+          this.message = 'Token verifikasi tidak valid atau sudah kadaluwarsa.';
         }
       });
     } else {
@@ -58,7 +58,7 @@ export class VerifyEmailComponent implements OnInit {
     }, 1000);
   }
 
-    resendVerification(): void {
+  resendVerification(): void {
     if (!this.email) {
       this.resendMessage = 'Email tidak boleh kosong.';
       return;
@@ -78,4 +78,20 @@ export class VerifyEmailComponent implements OnInit {
       }
     });
   }
+
+  isSuccessMessage(message: string): boolean {
+    const keywords = ['berhasil', 'terkirim', 'sukses'];
+    return keywords.some(keyword => message.toLowerCase().includes(keyword));
+  }
+
+  isErrorMessage(message: string): boolean {
+    const keywords = ['gagal', 'tidak valid', 'kadaluwarsa', 'kosong'];
+    return keywords.some(keyword => message.toLowerCase().includes(keyword));
+  }
+
+  isWarningMessage(message: string): boolean {
+    const keywords = ['sudah terverifikasi', 'sudah dikirim', 'token'];
+    return keywords.some(keyword => message.toLowerCase().includes(keyword));
+  }
+
 }

@@ -64,10 +64,11 @@
 
     <p
       *ngIf="resendMessage"
-      class="mt-2"
+      class="mt-2 fw-bold animate__animated"
       [ngClass]="{
-        'text-success': resendMessage.includes('berhasil'),
-        'text-danger': resendMessage.includes('Gagal')
+        'text-success animate__fadeInUp': isSuccessMessage(resendMessage),
+        'text-danger animate__shakeX': isErrorMessage(resendMessage),
+        'text-warning animate__fadeInUp': isWarningMessage(resendMessage)
       }"
     >
       {{ resendMessage }}

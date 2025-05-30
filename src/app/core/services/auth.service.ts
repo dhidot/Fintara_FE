@@ -13,7 +13,16 @@ export class AuthService {
 
   private handleError(error: any): Observable<never> {
     console.error('AuthService error:', error);
-    return throwError(() => new Error(error.message || 'Terjadi kesalahan pada permintaan.'));
+
+    // Ambil pesan error dari backend jika ada
+    let message = 'Terjadi kesalahan pada permintaan.';
+    if (error.error && error.error.message) {
+      message = error.error.message;
+    } else if (error.message) {
+      message = error.message;
+    }
+
+    return throwError(() => new Error(message));
   }
 
   getToken(): string | null {

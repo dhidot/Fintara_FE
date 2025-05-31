@@ -25,6 +25,7 @@ export class LandingComponent implements OnInit {
   loanTenor: number = 0;
   formattedLoanAmount: string = '';
   simulationResult: LoanSimulationResponseDTO | null = null;
+  email = 'info@fintara.co.id'
 
   constructor(private plafondService: PlafondService, private loanRequestService: LoanRequestService) {}
 

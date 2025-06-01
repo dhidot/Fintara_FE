@@ -3,7 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BranchService } from '../../../core/services/branch.service';
 import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
-import { BranchFormComponent } from '../../../shared/components/branch-form/branch-form.component'; // 🆕
+import { BranchFormComponent } from '../../../shared/components/branch-form/branch-form.component';
+import Swal from 'sweetalert2';  // <-- Import SweetAlert
 
 @Component({
   selector: 'app-edit-branch',
@@ -51,18 +52,29 @@ export class EditBranchComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.isLoading = true;
-    this.branchService.updateBranch(this.branchId, this.branch).subscribe({
-      next: () => {
-        this.toastr.success('Cabang berhasil diperbarui');
-        this.router.navigate(['/branches']);
-      },
-      error: (err) => {
-        console.error('Error:', err);
-        this.toastr.error('Gagal memperbarui cabang');
-      },
-      complete: () => {
-        this.isLoading = false;
+    Swal.fire({
+      title: 'Apakah Anda yakin?',
+      text: 'Data cabang akan diperbarui.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Ya, perbarui',
+      cancelButtonText: 'Batal'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.isLoading = true;
+        this.branchService.updateBranch(this.branchId, this.branch).subscribe({
+          next: () => {
+            this.toastr.success('Cabang berhasil diperbarui');
+            this.router.navigate(['/branches']);
+          },
+          error: (err) => {
+            console.error('Error:', err);
+            this.toastr.error('Gagal memperbarui cabang');
+          },
+          complete: () => {
+            this.isLoading = false;
+          }
+        });
       }
     });
   }

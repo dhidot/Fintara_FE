@@ -1,0 +1,49 @@
+.bg-gradient-plafond {
+  background: linear-gradient(45deg, #004085, #007bff); /* navy blue ke blue */
+  color: white;
+}
+
+.bg-gradient-role {
+  background: linear-gradient(45deg, #155724, #28a745); /* dark green ke green */
+  color: white;
+}
+
+.bg-gradient-loan-request {
+  background: linear-gradient(45deg, #856404, #ffc107); /* dark yellow ke gold */
+  color: white;
+}
+
+.bg-gradient-loan-status {
+  background: linear-gradient(45deg, #0c5460, #17a2b8); /* dark cyan ke cyan */
+  color: white;
+}
+
+.bg-gradient-customer {
+  background: linear-gradient(45deg, #1b1e21, #343a40); /* very dark grey ke dark grey */
+  color: white;
+}
+
+.bg-gradient-pegawai {
+  background: linear-gradient(45deg, #495057, #6c757d); /* dark slate grey ke slate grey */
+  color: white;
+}
+
+.bg-gradient-branch {
+  background: linear-gradient(45deg, #721c24, #dc3545); /* dark red ke red */
+  color: white;
+}
+
+.bg-gradient-dashboard {
+  background: linear-gradient(45deg, #343a40, #495057); /* dark grey ke medium grey */
+  color: white;
+}
+
+.bg-gradient-approval-history {
+  background: linear-gradient(45deg, #343a40, #6c757d); /* dark grey ke light grey */
+  color: white;
+}
+
+.bg-gradient-feature {
+  background: linear-gradient(45deg, #721c24, #e83e8c); /* dark pink ke pink */
+  color: white;
+}

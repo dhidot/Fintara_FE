@@ -1,5 +1,5 @@
-const baseUrl = 'http://34.55.162.194/api/v1';
-// baseUrl = http://34.55.162.194/api/v1
+const baseUrl = 'http://34.72.32.238/api/v1';
+// baseUrl = http://34.72.32.238/api/v1
 // localhost:8080/api/v1
 
 export const environment = {

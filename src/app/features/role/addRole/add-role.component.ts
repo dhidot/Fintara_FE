@@ -9,6 +9,7 @@ import { StringUtils } from '../../../core/utils/string-utils';
 import { FeatureWithDisplayName } from '../../../core/models/feature-with-display-name.dto';
 import { Feature } from '../../../core/models/feature-request.dto';
 import { firstValueFrom } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-role-create',
@@ -65,36 +66,42 @@ export class AddRoleComponent implements OnInit {
   }
 
   async onSubmit(): Promise<void> {
-    if (!this.roleName.trim()) {
-      this.toastr.warning('Nama role tidak boleh kosong');
-      return;
-    }
+  if (!this.roleName.trim()) {
+    this.toastr.warning('Nama role tidak boleh kosong');
+    return;
+  }
 
-    this.isLoading = true; // Mengubah status menjadi loading
+  const result = await Swal.fire({
+    title: 'Konfirmasi',
+    text: 'Apakah Anda yakin ingin membuat role baru ini?',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Ya, buat role',
+    cancelButtonText: 'Batal',
+  });
+
+  if (result.isConfirmed) {
+    this.isLoading = true;
 
     try {
-      // Normalisasi nama role
       const normalizedRoleName = StringUtils.normalizeRoleName(this.roleName, false);
 
-      // Langkah pertama: buat role
       const createdRole = await firstValueFrom(this.roleService.createRole({ name: normalizedRoleName }));
 
       if (!createdRole?.id) {
         throw new Error('Role ID tidak ditemukan');
       }
 
-      // Langkah kedua: assign fitur ke role
       await firstValueFrom(this.roleService.addRoleWithFeatures(createdRole.id, this.selectedFeatureIds));
 
       this.toastr.success('Role berhasil dibuat dan fitur ditambahkan');
       this.router.navigate(['/roles']);
-
     } catch (error: any) {
       console.error('Error:', error);
       this.toastr.error(error.error?.message || error.message || 'Terjadi kesalahan');
-
     } finally {
-      this.isLoading = false; // Mengubah status kembali ke false setelah selesai
+      this.isLoading = false;
     }
   }
+}
 }

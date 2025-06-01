@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PegawaiDetailsRequestDTO } from '../../../core/models/pegawai-detail-request.dto';
 import { BranchService } from '../../../core/services/branch.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-edit-pegawai',
@@ -87,30 +88,38 @@ export class EditPegawaiComponent implements OnInit {
     });
   }
 
-  onSubmit(): void {
-    this.isLoading = true;
-    const request: PegawaiDetailsRequestDTO = {
-      nip: this.pegawai.nip,
-      branchId: this.pegawai.branchId,
-      statusPegawai: this.pegawai.statusPegawai,
-      role: { name: this.pegawai.role }
-    };
+onSubmit(): void {
+  Swal.fire({
+    title: 'Apakah Anda yakin?',
+    text: 'Data pegawai akan diperbarui.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Ya, update',
+    cancelButtonText: 'Batal'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.isLoading = true;
+      const request: PegawaiDetailsRequestDTO = {
+        nip: this.pegawai.nip,
+        branchId: this.pegawai.branchId,
+        statusPegawai: this.pegawai.statusPegawai,
+        role: { name: this.pegawai.role }
+      };
 
-    this.pegawaiService.updatePegawaiDetails(this.idPegawai, request).subscribe({
-      next: (response) => {
-        this.toastr.success(response.message, 'Success')
-        this.router.navigate(['/pegawai']);
-      },
-      error: (error) => {
-        this.toastr.error(error.message || 'Gagal memperbarui data pegawai.', 'Error')
-        this.isLoading = false;
-      },
-      complete: () => {
-        this.isLoading = false;
-      }
-    });
-  }
-  onCancel(): void {
-    this.router.navigate(['/pegawai']);
-  }
+      this.pegawaiService.updatePegawaiDetails(this.idPegawai, request).subscribe({
+        next: (response) => {
+          this.toastr.success(response.message, 'Success');
+          this.router.navigate(['/pegawai']);
+        },
+        error: (error) => {
+          this.toastr.error(error.message || 'Gagal memperbarui data pegawai.', 'Error');
+          this.isLoading = false;
+        },
+        complete: () => {
+          this.isLoading = false;
+        }
+      });
+    }
+  });
+}
 }

@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common'; // Import komponen select field
 import { JenisKelamin } from 'src/app/core/enums/jenis-kelamin';
 import { StatusPegawai } from 'src/app/core/enums/status-pegawai';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-register-pegawai',
@@ -97,8 +98,16 @@ export class RegisterPegawaiComponent {
     }
 
     onSubmit(): void {
-      // Pastikan statusPegawai memiliki nilai yang sesuai dengan enum sebelum dikirim
-      if (this.pegawai.statusPegawai) {
+  if (this.pegawai.statusPegawai) {
+    Swal.fire({
+      title: 'Konfirmasi',
+      text: 'Apakah Anda yakin ingin mendaftarkan pegawai baru ini?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Ya, daftar',
+      cancelButtonText: 'Batal',
+    }).then((result) => {
+      if (result.isConfirmed) {
         this.isLoading = true;
         this.pegawaiService.registerPegawai(this.pegawai).subscribe({
           next: (response) => {
@@ -109,12 +118,10 @@ export class RegisterPegawaiComponent {
             this.router.navigate(['/pegawai']);
           },
           error: (error) => {
-            console.error('Error response:', error);  // Debug log untuk melihat seluruh respons error
+            console.error('Error response:', error);
 
-            // Jika ada pesan error dari backend, tampilkan masing-masing error
             if (error?.error) {
               for (const [field, message] of Object.entries(error.error)) {
-                // Pastikan message bertipe string
                 if (typeof message === 'string') {
                   this.toastr.warning(message, `Error pada field ${field}`, {
                     positionClass: 'toast-bottom-right',
@@ -129,13 +136,18 @@ export class RegisterPegawaiComponent {
               });
             }
             this.isLoading = false;
+          },
+          complete: () => {
+            this.isLoading = false;
           }
         });
-      } else {
-        this.toastr.error('Status Pegawai tidak valid.', 'Error', {
-          positionClass: 'toast-bottom-right',
-          progressBar: true,
-        });
       }
-    }
+    });
+  } else {
+    this.toastr.error('Status Pegawai tidak valid.', 'Error', {
+      positionClass: 'toast-bottom-right',
+      progressBar: true,
+    });
+  }
+}
 }

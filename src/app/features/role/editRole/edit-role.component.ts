@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { StringUtils } from '../../../core/utils/string-utils';
 import { firstValueFrom } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-edit-role',
@@ -81,24 +82,34 @@ export class EditRoleComponent implements OnInit {
       return;
     }
 
-    this.isLoading = true; // Set loading state to true
+    const result = await Swal.fire({
+      title: 'Konfirmasi',
+      text: 'Apakah Anda yakin ingin memperbarui role ini?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Ya, perbarui',
+      cancelButtonText: 'Batal',
+    });
 
-    try {
-      const normalizedRoleName = StringUtils.normalizeRoleName(this.roleName, false);
+    if (result.isConfirmed) {
+      this.isLoading = true;
 
-      // Mengupdate role dan menambahkan fitur yang dipilih
-      await firstValueFrom(this.roleService.updateRole(this.roleId, {
-        name: normalizedRoleName,
-        featureIds: this.selectedFeatureIds
-      }));
+      try {
+        const normalizedRoleName = StringUtils.normalizeRoleName(this.roleName, false);
 
-      this.toastr.success('Role berhasil diperbarui');
-      this.router.navigate(['/roles']);
-    } catch (error: any) {
-      console.error('Error:', error);
-      this.toastr.error(error.error?.message || error.message || 'Terjadi kesalahan');
-    } finally {
-      this.isLoading = false; // Set loading state to false
+        await firstValueFrom(this.roleService.updateRole(this.roleId, {
+          name: normalizedRoleName,
+          featureIds: this.selectedFeatureIds
+        }));
+
+        this.toastr.success('Role berhasil diperbarui');
+        this.router.navigate(['/roles']);
+      } catch (error: any) {
+        console.error('Error:', error);
+        this.toastr.error(error.error?.message || error.message || 'Terjadi kesalahan');
+      } finally {
+        this.isLoading = false;
+      }
     }
   }
 }

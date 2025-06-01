@@ -20,19 +20,18 @@
           <!-- Card untuk setiap kategori -->
           <div class="card shadow-sm h-100">
             <div class="card-body">
-              <!-- Judul kategori yang lebih menarik dengan warna latar belakang sesuai kategori -->
               <h4 class="card-title text-white py-2 px-3 rounded" [ngClass]="{
-    'bg-gradient-plafond': category === 'Plafond',
-    'bg-gradient-role': category === 'Role',
-    'bg-gradient-loan-request': category === 'Loan Request',
-    'bg-gradient-loan-status': category === 'Loan Status',
-    'bg-gradient-customer': category === 'Customer',
-    'bg-gradient-pegawai': category === 'Pegawai',
-    'bg-gradient-branch': category === 'Branch',
-    'bg-gradient-dashboard': category === 'Dashboard',
-    'bg-gradient-approval-history': category === 'Approval History',
-    'bg-gradient-feature': category === 'Feature'
-  }">
+                  'bg-gradient-plafond': category === 'Plafond',
+                  'bg-gradient-role': category === 'Role',
+                  'bg-gradient-loan-request': category === 'Loan Request',
+                  'bg-gradient-loan-status': category === 'Loan Status',
+                  'bg-gradient-customer': category === 'Customer',
+                  'bg-gradient-pegawai': category === 'Pegawai',
+                  'bg-gradient-branch': category === 'Branch',
+                  'bg-gradient-dashboard': category === 'Dashboard',
+                  'bg-gradient-approval-history': category === 'Approval History',
+                  'bg-gradient-feature': category === 'Feature'
+                }">
                 <i class="bi bi-tag-fill"></i> {{ category }}
               </h4>
 

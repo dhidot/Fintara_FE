@@ -15,6 +15,7 @@ import Swal from 'sweetalert2';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './edit-role.component.html',
+  styleUrls: ['./edit-role.component.css']
 })
 export class EditRoleComponent implements OnInit {
   roleId: string = '';

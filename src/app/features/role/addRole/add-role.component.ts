@@ -15,7 +15,8 @@ import Swal from 'sweetalert2';
   selector: 'app-role-create',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './add-role.component.html'
+  templateUrl: './add-role.component.html',
+  styleUrls: ['./add-role.component.css'] 
 })
 export class AddRoleComponent implements OnInit {
   roleName: string = '';

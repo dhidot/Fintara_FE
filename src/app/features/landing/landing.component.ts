@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { PlafondService } from '../../core/services/plafond.service';
+import { Router } from '@angular/router';
 import Swiper from 'swiper';
 import 'swiper/css/bundle';
 import { LoanRequestService } from 'src/app/core/services/loan-request.service';
@@ -27,7 +28,7 @@ export class LandingComponent implements OnInit {
   simulationResult: LoanSimulationResponseDTO | null = null;
   email = 'info@fintara.co.id'
 
-  constructor(private plafondService: PlafondService, private loanRequestService: LoanRequestService) {}
+  constructor(private plafondService: PlafondService, private loanRequestService: LoanRequestService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadPlafonds();
@@ -138,5 +139,9 @@ export class LandingComponent implements OnInit {
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+  }
+
+  goToLogin() {
+    this.router.navigate(['/login']);
   }
 }
